@@ -1,8 +1,11 @@
+import Hero from "@/components/hero/Hero";
+import Navigation from "@/components/navigation/Navigation";
 
 export default function Home() {
   return (
-    <div>
-      <h1 className="text-3xl">Hello, Next.js!</h1>
-    </div>
+    <>
+      <Navigation />
+      <Hero />
+    </>
   );
 }
