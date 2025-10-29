@@ -59,7 +59,7 @@ const Hero = () => {
                         />
                     </div>
                     <div className='absolute aspect-square top-1/9 right-1/3 w-1/12'>
-                        {/* Arrow */}
+                        {/* Rain */}
                         <Image
                             alt='hero-image-icon4'
                             src={'/hero/bshape_02.png'}
