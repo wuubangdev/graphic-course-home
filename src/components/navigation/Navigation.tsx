@@ -5,10 +5,10 @@ import Image from 'next/image'
 
 const Navigation = () => {
     return (
-        <section className='fixed top-0 left-0 right-0  px-4 bg-white/60 z-50'
+        <section className='fixed top-0 left-0 right-0  px-4 bg-white z-50'
             style={{
                 boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                backdropFilter: "blur(10px)",
+                // backdropFilter: "blur(10px)",
             }}
         >
             <div
