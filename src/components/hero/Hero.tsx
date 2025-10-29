@@ -16,7 +16,7 @@ const Hero = () => {
                 />
             </div>
             <div
-                className='mx-auto container px-4 h-screen grid grid-cols-2'
+                className='mx-auto container px-4 grid grid-cols-2'
             >
                 {/* Left part */}
                 <div className='mx-auto w-8/10 flex justify-center items-start relative'>
