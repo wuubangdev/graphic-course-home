@@ -4,22 +4,22 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <section className='pt-28 pb-14 bg-blue-900 text-[#b2bdcd]'>
+        <section className='pt-28 pb-1 bg-blue-900 text-[#b2bdcd]'>
             <div className='container mx-auto px-4 text-center'>
                 <div className='grid grid-cols-3'>
-                    <div className='flex flex-col items-start gap-2'>
-                        <div className='w-1/2 aspect-video relative'>
+                    <div className='flex flex-col items-center gap-2'>
+                        <div className='w-1/2 aspect-video relative cursor-pointer overflow-hidden'>
                             <Image
                                 alt='logo'
                                 src={'/hero/logo.jpg'}
                                 fill={true}
                                 style={{ objectFit: 'cover' }}
-                                className='w-full h-full'
+                                className='w-full h-full hover:scale-105 duration-300'
                             />
                         </div>
-                        <p className='text-justify'>when an unknown printer took galley of type and scrambled it to make pspecimen bookt has.</p>
-                        <p className='text-justify text-white font-semibold'>khoahocdohoa@gmail.com</p>
-                        <p className='text-justify text-white font-semibold'>+84 123 456 789</p>
+                        {/* <p className='text-justify'>when an unknown printer took galley of type and scrambled it to make pspecimen bookt has.</p> */}
+                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>khoahocdohoa@gmail.com</p>
+                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>+84 123 456 789</p>
                         <div className='flex items-center gap-3'>
                             <Link href={""} target='_blank' className='group' >
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,256,256" className='scale-75 group-hover:scale-90 duration-500'>
@@ -51,11 +51,20 @@ const Footer = () => {
                             </Link>
                         </div>
                     </div>
-                    <div>123213</div>
-                    <div className='flex flex-col items-center justify-center'>
-                        <h2 className='text-xl font-semibold mb-3'>Hỗ trợ thanh toán</h2>
+                    <div className='flex flex-col items-center gap-1'>
+                        <h2 className='text-2xl font-semibold mb-2 text-white'>CHÍNH SÁCH & BẢO MẬT</h2>
+                        <ul className='flex flex-col'>
+                            <li className='cursor-pointer hover:text-white text-lg duration-300'>Giới thiệu về trang web</li>
+                            <li className='cursor-pointer hover:text-white text-lg duration-300'>Điều khoản dịch vụ</li>
+                            <li className='cursor-pointer hover:text-white text-lg duration-300'>Chính sách bảo mật</li>
+                            <li className='cursor-pointer hover:text-white text-lg duration-300'>Liên hệ hỗ trợ</li>
+                            <li className='cursor-pointer hover:text-white text-lg duration-300'>Chat với CSKH</li>
+                        </ul>
+                    </div>
+                    <div className='flex flex-col items-center gap-2'>
+                        <h2 className='text-2xl font-semibold mb-3 text-white uppercase'>Hỗ trợ thanh toán</h2>
                         <div className='flex gap-2 justify-between'>
-                            <div className='grid grid-cols-3 gap-4'>
+                            <div className='grid grid-cols-4 gap-4'>
                                 <div className='rounded-lg overflow-hidden hover:scale-115 duration-300'>
                                     <Image src='/footer/momo.png' alt='momo' width={38} height={38} className='cursor-pointer' />
                                 </div>
@@ -65,11 +74,14 @@ const Footer = () => {
                                 <div className='rounded-lg overflow-hidden hover:scale-115 duration-300'>
                                     <Image src='/footer/atm.png' alt='atm' width={38} height={38} className='cursor-pointer' />
                                 </div>
+                                <div className='rounded-lg overflow-hidden hover:scale-115 duration-300'>
+                                    <Image src='/footer/atm.png' alt='atm' width={38} height={38} className='cursor-pointer' />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <p className='mb-4 mt-6 pt-2 border-t-[1px] border-dashed border-gray-100/30'>&copy; 2024 Graphic Course. All rights reserved.</p>
+                <p className='mt-6 pt-2 border-t-[1px] border-dashed border-gray-100/30'>&copy; 2024 Graphic Course. All rights reserved.</p>
             </div>
         </section>
     )

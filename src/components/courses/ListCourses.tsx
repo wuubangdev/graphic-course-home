@@ -25,55 +25,61 @@ const ListCourses = () => {
                     </div>
                 </div>
                 {/* Course List */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa học đang sale nỗi bật</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa học đang sale nỗi bật</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Bán chạy nhất</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Bán chạy nhất</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa 2D</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa 2D</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa 3D</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa 3D</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa Lập Trình</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa Lập Trình</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa AI</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Khóa AI</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                     <CourseCard />
                 </div>
+                <hr className='mt-4 border-gray-300' />
                 {/*  */}
-                <h2 className='mt-8 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Mua Tài Khoản</h2>
+                <h2 className='mt-6 font-semibold text-xl px-3 py-1 bg-blue-600 text-white rounded-sm inline-block'>Mua Tài Khoản</h2>
                 <div className='mt-4 grid grid-cols-4 gap-8'>
                     <CourseCard />
                     <CourseCard />
