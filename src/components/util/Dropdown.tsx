@@ -28,7 +28,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items, value }) => {
             className='relative group'
         >
             {value ? <Link href={value}><Label label={label} /></Link> : <span><Label label={label} hasItems={true} /></span>}
-            <ul className='absolute scale-y-0 group-hover:scale-y-100 bg-white py-4 rounded-md duration-300 origin-top'
+            <ul className='absolute scale-y-0 group-hover:scale-y-100 group-hover:opacity-100 opacity-0 bg-white py-4 rounded-md duration-300 origin-top'
                 style={{
                     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
                 }}
