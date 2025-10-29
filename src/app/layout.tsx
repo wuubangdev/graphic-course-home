@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navigation from "@/components/navigation/Navigation";
 
 export const metadata: Metadata = {
   title: "Khoá học giá rẻ",
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body
       >
+        <Navigation />
         {children}
       </body>
     </html>

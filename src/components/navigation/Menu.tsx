@@ -39,7 +39,7 @@ const Menu = () => {
     ];
 
     return (
-        <ul className='flex'>
+        <ul className='flex justify-center'>
             {menuItems.map((item, index) => (
                 <Dropdown
                     key={index}
