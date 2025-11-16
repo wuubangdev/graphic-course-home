@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import MenuItem from './MenuItem'
+import Link from 'next/link'
 
 const Navigation = () => {
     return (
@@ -16,7 +17,7 @@ const Navigation = () => {
                 <div className='grid grid-cols-5 px-4'>
                     <div className='flex'>
                         {/* Logo */}
-                        <div className='aspect-video w-2/3 relative'>
+                        <Link href={"/"} className='aspect-video w-2/3 relative cursor-pointer'>
                             <Image
                                 alt='logo'
                                 src={'/logo.png'}
@@ -24,7 +25,7 @@ const Navigation = () => {
                                 style={{ objectFit: 'contain' }}
                                 className='w-full h-full'
                             />
-                        </div>
+                        </Link>
                     </div>
                     <div className='flex py-6 col-span-2 pr-8'>
                         <input type="text" placeholder='Tìm kím sản phẩm'

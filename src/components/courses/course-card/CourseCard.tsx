@@ -1,9 +1,10 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const CourseCard = () => {
     return (
-        <div className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300'
+        <Link href={'/123'} className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300'
             style={{
                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
             }}
@@ -11,7 +12,7 @@ const CourseCard = () => {
             {/* Thumbnail */}
             <div className='w-full aspect-video relative bg-amber-200'>
                 <Image
-                    src="/courses/course_thumb01.jpg"
+                    src="/test.png"
                     alt="Course Thumbnail"
                     fill
                     className='object-cover rounded-t-lg' />
@@ -31,7 +32,7 @@ const CourseCard = () => {
                 <span className='px-3 py-1 bg-red-700 text-white absolute top-3 right-3 text-sm rounded-sm'>Giảm 80%</span>
             </div>
             {/* Sale */}
-        </div>
+        </Link>
     )
 }
 
