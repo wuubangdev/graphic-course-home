@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Footer = () => {
@@ -8,8 +9,8 @@ const Footer = () => {
                 <div className='py-3 flex gap-2 bg-white px-3'>
                     <img alt='momo' src={'/footer/MOMOO.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
                     <img alt='VNPAY' src={'/footer/VNPAY.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
-                    <img alt='VISA' src={'/footer/VISA.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
-                    <img alt='ATM' src={'/footer/ATM.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
+                    <img alt='VISA' src={'/footer/visa.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
+                    <img alt='ATM' src={'/footer/atm.png'} className='hover:scale-105 duration-300 cursor-pointer h-10 w-auto' />
                 </div>
                 {/* Social */}
                 <div className='py-3 flex items-center gap-2 border-b-[1px] px-3 border-gray-400'>
@@ -48,7 +49,11 @@ const Footer = () => {
                             <span className='hover:opacity-70 hover:underline duration-300 cursor-pointer'>Chat với CSKH</span>
                         </div>
                     </div>
-                    <div className='bg-gray-500 w-1/4'>123</div>
+                    <div className='w-1/4 flex justify-center'>
+                        <div className='aspect-square w-1/2 relative overflow-hidden'>
+                            <Image src={'/footer/dmca.png'} alt='dmca-logo' fill className='object-cover w-full h-full' />
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
