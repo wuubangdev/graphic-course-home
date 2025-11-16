@@ -3,7 +3,7 @@ import React from 'react'
 
 const CourseCard = () => {
     return (
-        <div className='flex flex-col gap-4 relative cursor-pointer hover:-translate-y-1 duration-300'
+        <div className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300'
             style={{
                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
             }}
@@ -18,7 +18,7 @@ const CourseCard = () => {
             </div>
             <div className='flex flex-col px-4 gap-3 pb-6 bg-gray-100'>
                 {/* Title */}
-                <h3 className='text-xl font-semibold'>Bigener Adobe Illustrator for Graphic Design</h3>
+                <h3 className='text-lg pt-3 font-semibold'>Bigener Adobe Illustrator for Graphic Design</h3>
                 {/* Cost */}
                 <div className='flex justify-between'>
                     <div className='flex gap-2'>

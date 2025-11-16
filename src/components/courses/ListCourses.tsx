@@ -4,12 +4,12 @@ import Image from 'next/image'
 
 const ListCourses = () => {
     return (
-        <section className='pt-28 pb-24 relative'>
+        <section className='pt-8 pb-24 relative'>
             <div className='container px-4 mx-auto z-20'>
                 {/* Heading */}
                 <div className='grid grid-cols-3'>
                     <div className='flex flex-col items-start'>
-                        <p className='px-4 py-2 bg-blue-100 text-blue-600 rounded mb-4 font-semibold'>10,000+ Khóa học online khác nhau</p>
+                        {/* <p className='px-4 py-2 bg-blue-100 text-blue-600 rounded mb-4 font-semibold'>10,000+ Khóa học online khác nhau</p> */}
                         <h1 className='text-4xl font-semibold'>Các <span className='text-blue-600'>Khóa Học</span> Chính</h1>
                     </div>
                     <div className='flex justify-end items-end col-span-2'>
