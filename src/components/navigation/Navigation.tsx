@@ -16,12 +16,12 @@ const Navigation = () => {
                 <div className='grid grid-cols-5 px-4'>
                     <div className='flex'>
                         {/* Logo */}
-                        <div className='aspect-video h-full relative'>
+                        <div className='aspect-video w-2/3 relative'>
                             <Image
                                 alt='logo'
-                                src={'/hero/logo.jpg'}
+                                src={'/logo.png'}
                                 fill={true}
-                                style={{ objectFit: 'cover' }}
+                                style={{ objectFit: 'contain' }}
                                 className='w-full h-full'
                             />
                         </div>
