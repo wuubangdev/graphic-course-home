@@ -1,6 +1,5 @@
 import React from 'react'
 import CourseCard from './course-card/CourseCard'
-import Image from 'next/image'
 
 const ListCourses = () => {
     return (
@@ -87,8 +86,7 @@ const ListCourses = () => {
                     <CourseCard />
                 </div>
             </div>
-            <div className='absolute aspect-square top-44 left-0 w-1/16 animate-[bounce_3s_ease-in-out_infinite] -z-10'>
-                {/* Arrow */}
+            {/* <div className='absolute aspect-square top-44 left-0 w-1/16 animate-[bounce_3s_ease-in-out_infinite] -z-10'>
                 <Image
                     alt='hero-image-icon4'
                     src={'/hero/bshape_01.png'}
@@ -97,14 +95,13 @@ const ListCourses = () => {
                 />
             </div>
             <div className='absolute aspect-square top-2/3 right-10 w-1/16 animate-[bounce_3s_ease-in-out_infinite] -z-10'>
-                {/* Rain */}
                 <Image
                     alt='hero-image-icon4'
                     src={'/hero/bshape_02.png'}
                     fill
                     className='object-contain object-center'
                 />
-            </div>
+            </div> */}
         </section>
     )
 }

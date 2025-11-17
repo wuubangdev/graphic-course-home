@@ -1,3 +1,4 @@
+import CustomCarousel from '@/components/carousel/CustomCarousel'
 import Image from 'next/image'
 import React from 'react'
 
@@ -9,14 +10,8 @@ const page = () => {
             >
                 <div className='border-t-[1px] border-gray-400 py-8 grid grid-cols-3'>
                     <div className='px-4'>
-                        <div className='w-full aspect-video rounded-2xl relative bg-blue-400'>
-                            <Image
-                                alt='thumb-product'
-                                src={'/test.png'}
-                                fill
-                                objectFit='contain'
-                                className='rounded-2xl'
-                            />
+                        <div className='w-full aspect-video rounded-2xl overflow-hidden'>
+                            <CustomCarousel />
                         </div>
                         <p className='text-center py-2 italic text-blue-600'>Xem thêm ảnh</p>
                     </div>

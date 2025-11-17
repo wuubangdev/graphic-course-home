@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/footer/Footer";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 export const metadata: Metadata = {
   title: "Khoá học giá rẻ",
@@ -17,9 +18,11 @@ export default function RootLayout({
     <html lang="en">
       <body
       >
-        <Navigation />
-        {children}
-        <Footer />
+        <AntdRegistry>
+          <Navigation />
+          {children}
+          <Footer />
+        </AntdRegistry>
       </body>
     </html>
   );
