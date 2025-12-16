@@ -2,8 +2,11 @@ import React from 'react';
 import { Carousel } from 'antd';
 import Image from 'next/image';
 
+interface CustomCarouselProps {
+    listImage: string[];
+}
 
-const CustomCarousel: React.FC = () => (
+const CustomCarousel: React.FC<CustomCarouselProps> = ({ listImage }) => (
     <Carousel
         autoplay={{ dotDuration: true }}
         autoplaySpeed={5000}
@@ -11,18 +14,12 @@ const CustomCarousel: React.FC = () => (
         infinite
         className='w-full h-full'
     >
-        <div className='w-full aspect-video relative'>
-            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-        </div>
-        <div className='w-full aspect-video relative'>
-            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-        </div>
-        <div className='w-full aspect-video relative'>
-            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-        </div>
-        <div className='w-full aspect-video relative'>
-            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-        </div>
+        {listImage && listImage.map((imageUrl, index) => (
+            <div key={"crs-" + index} className='w-full aspect-video relative'>
+                <Image alt='carousel' src={imageUrl} fill objectFit='cover' />
+            </div>
+        ))}
+
     </Carousel>
 );
 

@@ -131,7 +131,6 @@ export async function fetchLearnPressCourse(opts: FetchOpts) {
 
     const base = endpoint.replace(/\/+$/, "");
     const url = new URL(`${base}/${encodeURIComponent(String(id))}`, baseUrl);
-
     if (status && status !== "any") url.searchParams.set("status", status);
 
     const res = await fetch(url.toString(), {
@@ -139,7 +138,9 @@ export async function fetchLearnPressCourse(opts: FetchOpts) {
         next: { revalidate: revalidateSeconds },
     });
 
-    if (!res.ok) {
+    if (res.status !== 200) {
+        console.log(res);
+        return {} as LpCourse;
         const text = await res.text().catch(() => "");
         throw new Error(`LearnPress course ${res.status}: ${text}`);
     }

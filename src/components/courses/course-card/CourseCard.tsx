@@ -1,4 +1,5 @@
 import { fetchLearnPressCourse, LpCourse } from '@/lib/learnpress'
+import { toSlug } from '@/lib/slug';
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -8,17 +9,17 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = async ({ courseId }) => {
-    const course: LpCourse = await fetchLearnPressCourse({
+    const course: LpCourse = await fetchLearnPressCourse({  
         baseUrl: process.env.WP_BASE_URL!,
         id: courseId || 0,
     });
     return (
-        <Link href={'/123'} className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300'
+        <Link href={`khoa-hoc/${toSlug(course?.name ||"123")}-${course.id}.html`} className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300'
             style={{
                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
             }}
         >
-            {/* Thumbnail */}
+            {/* Thumbnail */}   
             <div className='w-full aspect-[21/9] relative bg-amber-200'>
                 <Image
                     src={course?.image || "/test.png"}
