@@ -24,7 +24,7 @@ const page = async ({ params }: Props) => {
     });
 
     return (
-        <section className='w-full pt-44'>
+        <section className='w-full'>
             <div
                 className='mx-auto container px-4 flex flex-col gap-4'
             >

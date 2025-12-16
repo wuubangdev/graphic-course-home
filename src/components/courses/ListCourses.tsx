@@ -7,7 +7,7 @@ const ListCourses = async () => {
         baseUrl: process.env.WP_BASE_URL!,
     });
     return (
-        <section className='pt-8 pb-24 relative mt-80'>
+        <section className='pt-8 pb-24 relative'>
             <div className='container px-4 mx-auto z-20'>
                 {/* Heading */}
                 <div className='grid grid-cols-3'>

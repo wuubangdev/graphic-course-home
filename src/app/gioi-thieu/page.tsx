@@ -115,7 +115,7 @@ const faqItems = [
 
 export default function AboutKhoahocDohoaPage() {
     return (
-        <div className="bg-[#f5f7fb] pt-32">
+        <div className="bg-[#f5f7fb]">
             {/* HERO SECTION */}
             <section className="relative overflow-hidden bg-[#0049d9] text-white">
                 {/* video nền */}

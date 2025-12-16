@@ -1,16 +1,18 @@
+import Link from 'next/link'
 import React from 'react'
 
 interface MenuItemProps {
     icon: React.ReactNode
     title: string
+    href: string
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({ icon, title }) => {
+const MenuItem: React.FC<MenuItemProps> = ({ icon, title, href }) => {
     return (
-        <div className='text-white flex gap-2 py-4 cursor-pointer group'>
+        <Link href={href} className='text-white flex gap-2 py-4 cursor-pointer group'>
             <div className='group-hover:-translate-y-0.5 duration-300'>{icon}</div>
             <span className='group-hover:-translate-y-1 duration-300'>{title}</span>
-        </div>
+        </Link>
     )
 }
 
