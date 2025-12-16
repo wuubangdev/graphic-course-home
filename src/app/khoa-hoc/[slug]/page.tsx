@@ -1,5 +1,4 @@
 import CustomCarousel from '@/components/carousel/CustomCarousel'
-import Image from 'next/image'
 import React from 'react'
 
 const page = () => {
