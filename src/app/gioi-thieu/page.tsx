@@ -434,7 +434,7 @@ export default function AboutKhoahocDohoaPage() {
                                 title: "Hoàn thiện Portfolio",
                                 body: "Kết thúc khóa học với một dự án xịn và quy trình làm việc chuyên nghiệp trong portfolio, sẵn sàng ứng tuyển.",
                             },
-                        ].map((s, idx) => (
+                        ].map((s) => (
                             <div
                                 key={s.title}
                                 className="relative rounded-2xl bg-white shadow-sm p-5 flex flex-col gap-3"

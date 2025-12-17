@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import CustomCarousel from '../carousel/CustomCarousel'
+// import CustomCarousel from '../carousel/CustomCarousel'
 import LiItem from './LiItem'
 
 const Hero = () => {
@@ -78,7 +78,7 @@ const Hero = () => {
                         </ul>
                     </div>
                     <div className='col-span-2 aspect-video rounded-lg overflow-hidden'>
-                        <CustomCarousel />
+                        {/* <CustomCarousel /> */}
                     </div>
                     <div className='flex flex-col gap-2'>
                         <div className='aspect-video rounded-lg overflow-hidden relative'>

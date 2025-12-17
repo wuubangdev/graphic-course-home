@@ -1,8 +1,7 @@
 import he from "he";
 
 const WP_API_BASE =
-    process.env.NEXT_PUBLIC_WP_API_BASE ??
-    "https://admin.khoahocdohoa.com/wp-json";
+    process.env.NEXT_PUBLIC_WP_API_BASE ?? "https://admin.khoahocdohoa.com/wp-json";
 
 export type BlogPostSummary = {
     id: number;
@@ -18,29 +17,66 @@ export type BlogPostDetail = BlogPostSummary & {
     contentHtml: string;
 };
 
-// function stripHtml(html: string): string {
-//     if (!html) return "";
-//     return html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-// }
+// --- WP REST minimal types (đủ dùng cho code này) ---
+type WpRendered = { rendered?: string };
+
+type WpMedia = {
+    source_url?: string;
+};
+
+type WpTerm = {
+    taxonomy?: string;
+    name?: string;
+};
+
+type WpEmbedded = {
+    "wp:featuredmedia"?: WpMedia[];
+    "wp:term"?: WpTerm[][];
+};
+
+type WpPost = {
+    id: number;
+    slug: string;
+    date: string;
+    title?: WpRendered;
+    excerpt?: WpRendered;
+    content?: WpRendered;
+    _embedded?: WpEmbedded;
+};
 
 function normalizeWpText(html: string): string {
     if (!html) return "";
 
-    // 1) Bỏ tag HTML
     const noTags = html.replace(/<[^>]+>/g, " ");
-
-    // 2) Decode HTML entities: &#8220; &hellip; ...
     const decoded = he.decode(noTags);
-
-    // 3) Bỏ khoảng trắng dư
     let text = decoded.replace(/\s+/g, " ").trim();
-
-    // 4) Xử lý riêng pattern "[…]" cuối excerpt của WP
     text = text.replace(/\[\s*…\s*\]$/u, "").trim();
 
     return text;
 }
 
+function toSummary(p: WpPost): BlogPostSummary {
+    const embedded = p._embedded;
+
+    const media = embedded?.["wp:featuredmedia"]?.[0];
+    const termGroups = embedded?.["wp:term"] ?? [];
+    const terms = termGroups.flat();
+
+    const categoryNames = terms
+        .filter((t) => t.taxonomy === "category")
+        .map((t) => t.name ?? "")
+        .filter(Boolean);
+
+    return {
+        id: p.id,
+        slug: p.slug,
+        title: normalizeWpText(p.title?.rendered ?? ""),
+        excerpt: normalizeWpText(p.excerpt?.rendered ?? ""),
+        thumbnail: media?.source_url,
+        categoryNames,
+        publishedAt: p.date,
+    };
+}
 
 // Lấy danh sách bài viết
 export async function fetchBlogPosts(opts?: {
@@ -65,35 +101,17 @@ export async function fetchBlogPosts(opts?: {
         throw new Error(`Failed to fetch posts: ${res.status}`);
     }
 
-    const raw = (await res.json()) as any[];
+    const raw = (await res.json()) as unknown as WpPost[];
     const total = Number(res.headers.get("X-WP-Total") ?? "0");
     const totalPages = Number(res.headers.get("X-WP-TotalPages") ?? "0");
 
-    const posts: BlogPostSummary[] = raw.map((p) => {
-        const embedded = p._embedded || {};
-        const media = embedded["wp:featuredmedia"]?.[0];
-        const terms = embedded["wp:term"]?.flat?.() ?? [];
-
-        return {
-            id: p.id,
-            slug: p.slug,
-            title: normalizeWpText(p.title?.rendered ?? ""),
-            excerpt: normalizeWpText(p.excerpt?.rendered ?? ""),
-            thumbnail: media?.source_url,
-            categoryNames: terms
-                .filter((t: any) => t.taxonomy === "category")
-                .map((t: any) => t.name),
-            publishedAt: p.date,
-        };
-    });
+    const posts: BlogPostSummary[] = raw.map(toSummary);
 
     return { posts, total, totalPages };
 }
 
 // Lấy chi tiết 1 bài theo slug
-export async function fetchBlogPostBySlug(
-    slug: string,
-): Promise<BlogPostDetail | null> {
+export async function fetchBlogPostBySlug(slug: string): Promise<BlogPostDetail | null> {
     const url = new URL(`${WP_API_BASE}/wp/v2/posts`);
     url.searchParams.set("slug", slug);
     url.searchParams.set("_embed", "1");
@@ -104,25 +122,11 @@ export async function fetchBlogPostBySlug(
 
     if (!res.ok) return null;
 
-    const list = (await res.json()) as any[];
+    const list = (await res.json()) as unknown as WpPost[];
     const p = list[0];
     if (!p) return null;
 
-    const embedded = p._embedded || {};
-    const media = embedded["wp:featuredmedia"]?.[0];
-    const terms = embedded["wp:term"]?.flat?.() ?? [];
-
-    const summary: BlogPostSummary = {
-        id: p.id,
-        slug: p.slug,
-        title: normalizeWpText(p.title?.rendered ?? ""),
-        excerpt: normalizeWpText(p.excerpt?.rendered ?? ""),
-        thumbnail: media?.source_url,
-        categoryNames: terms
-            .filter((t: any) => t.taxonomy === "category")
-            .map((t: any) => t.name),
-        publishedAt: p.date,
-    };
+    const summary = toSummary(p);
 
     return {
         ...summary,
