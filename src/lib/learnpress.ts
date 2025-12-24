@@ -52,6 +52,7 @@ type FetchAllOpts = {
     status?: "publish" | "draft" | "any";
     revalidateSeconds?: number;
     category?: string;
+    search?: string;
 };
 
 type FetchOpts = {
@@ -63,6 +64,67 @@ type FetchOpts = {
 };
 
 export async function fetchAllLearnPressCourses(opts: FetchAllOpts) {
+    const {
+        baseUrl,
+        endpoint = "/wp-json/learnpress/v1/courses",
+        perPage = 100,
+        status = "publish",
+        revalidateSeconds = 60,
+        category = "",
+        search = "",
+    } = opts;
+
+    const all: LpCourse[] = [];
+    let page = 1;
+    let totalPages: number | null = null;
+
+    while (true) {
+        const url = new URL(endpoint, baseUrl);
+        url.searchParams.set("per_page", String(perPage));
+        url.searchParams.set("page", String(page));
+        url.searchParams.set("category", String(category));
+        url.searchParams.set("search", String(search));
+
+        if (status) url.searchParams.set("status", status);
+
+        const res = await fetch(url.toString(), {
+            headers: { Accept: "application/json" },
+            next: { revalidate: revalidateSeconds },
+        });
+
+        if (!res.ok) {
+            const text = await res.text().catch(() => "");
+            throw new Error(`LearnPress courses ${res.status}: ${text}`);
+        }
+
+        // WP REST thường có header tổng số trang
+        if (totalPages == null) {
+            const tp = res.headers.get("x-wp-totalpages");
+            totalPages = tp ? Number(tp) : null;
+        }
+
+        const data = (await res.json()) as LpCourse[];
+
+        if (!Array.isArray(data)) {
+            throw new Error("Unexpected LearnPress response (expected array).");
+        }
+
+        all.push(...data);
+
+        // dừng
+        if (totalPages != null) {
+            if (page >= totalPages) break;
+        } else {
+            if (data.length < perPage) break;
+        }
+
+        page += 1;
+    }
+
+    return all;
+}
+
+export async function fetch8LearnPressCourses(opts: FetchAllOpts) {
     const {
         baseUrl,
         endpoint = "/wp-json/learnpress/v1/courses",
@@ -117,7 +179,7 @@ export async function fetchAllLearnPressCourses(opts: FetchAllOpts) {
         page += 1;
     }
 
-    return all;
+    return all.slice(0, 8);
 }
 
 export async function fetchLearnPressCourse(opts: FetchOpts) {

@@ -1,17 +1,31 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import MenuItem from './MenuItem'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const Navigation = () => {
+    const router = useRouter();
+    const [q, setQ] = useState("");
+
+    function onSearch() {
+        const keyword = q.trim();
+        if (!keyword) return;
+
+        const url = `/khoa-hoc?search=${encodeURIComponent(keyword)}&page=1`;
+        router.push(url);
+    }
+
+    function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Enter") onSearch();
+    }
     return (
         <section
-            // className='fixed top-0 left-0 right-0  px-4 bg-blue-500 z-50'
             className='w-full px-4 bg-blue-500 z-50'
 
             style={{
                 boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                // backdropFilter: "blur(10px)",
             }}
         >
             <div
@@ -31,10 +45,18 @@ const Navigation = () => {
                         </Link>
                     </div>
                     <div className='flex py-6 col-span-2 pr-8'>
-                        <input type="text" placeholder='Tìm kím sản phẩm'
+                        <input
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                            onKeyDown={onKeyDown}
+                            type="text"
+                            placeholder='Tìm kím sản phẩm'
                             className='bg-white flex-1 border-r-0 rounded-l px-4 py-2 focus:outline-none'
                         />
-                        <div className='bg-blue-800 rounded-r border-l-0 flex items-center justify-center px-2'>
+                        <div
+                            onClick={onSearch}
+                            className='bg-blue-800 rounded-r border-l-0 flex items-center justify-center px-2'
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
                                 className="size-6 text-white hover:text-gray-400 cursor-pointer duration-300"
                             >

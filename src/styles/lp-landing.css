@@ -1,0 +1,290 @@
+/* ===== Container + tokens (đổi 1 lần, áp toàn site) ===== */
+.rich-content {
+    --rc-max: 920px;
+    --rc-fg: rgba(0, 0, 0, .88);
+    --rc-muted: rgba(0, 0, 0, .72);
+    --rc-soft: rgba(0, 0, 0, .08);
+    --rc-card: rgba(248, 250, 252, .92);
+    --rc-radius: 16px;
+    --rc-radius-sm: 12px;
+
+    max-width: var(--rc-max);
+    margin: 0 auto;
+    padding: 16px 12px 28px;
+    color: var(--rc-fg);
+    line-height: 1.85;
+    word-break: break-word;
+}
+
+/* reset margin cho content */
+.rich-content :where(p, ul, ol, blockquote, pre, table, figure) {
+    margin: 0 0 14px 0;
+}
+
+/* ===== Headings ===== */
+.rich-content :where(h1, h2, h3, h4, h5, h6) {
+    color: var(--rc-fg);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 18px 0 10px 0;
+}
+
+.rich-content h1 {
+    font-size: 38px;
+}
+
+.rich-content h2 {
+    font-size: 32px;
+}
+
+.rich-content h3 {
+    font-size: 22px;
+}
+
+.rich-content h4 {
+    font-size: 18px;
+}
+
+.rich-content h5 {
+    font-size: 16px;
+}
+
+.rich-content h6 {
+    font-size: 14px;
+}
+
+/* ===== Paragraph / inline ===== */
+.rich-content p {
+    color: var(--rc-muted);
+}
+
+.rich-content strong {
+    color: var(--rc-fg);
+}
+
+.rich-content em {
+    color: var(--rc-fg);
+}
+
+.rich-content small {
+    color: var(--rc-muted);
+}
+
+/* ===== Links ===== */
+.rich-content a {
+    color: var(--rc-fg);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .18);
+}
+
+.rich-content a:hover {
+    border-bottom-color: rgba(0, 0, 0, .45);
+}
+
+/* Button-like links (nếu WP có inline padding/border-radius) */
+.rich-content a[style*="padding"][style*="border-radius"] {
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    padding: 11px 16px !important;
+    border-radius: var(--rc-radius-sm) !important;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .12);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+.rich-content a[style*="padding"][style*="border-radius"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, .16);
+    opacity: .96;
+}
+
+/* ===== Divider ===== */
+.rich-content hr {
+    border: none !important;
+    border-top: 1px solid var(--rc-soft) !important;
+    margin: 20px 0 !important;
+}
+
+/* ===== Images / Figures ===== */
+/* Ảnh mặc định: không phóng to */
+.rich-content img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    margin: 12px auto 14px;
+    /* auto => center */
+    box-shadow: 0 16px 50px rgba(0, 0, 0, .10);
+}
+
+/* Ảnh mà bạn CHỦ ĐÍCH muốn full-width (WP thường set style width:100%) */
+/* 1) Chặn mọi thứ vượt container */
+.rich-content,
+.rich-content * {
+    box-sizing: border-box;
+}
+
+/* 2) Media không được vượt bề ngang */
+.rich-content img,
+.rich-content video,
+.rich-content iframe,
+.rich-content svg {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* 3) Wrapper ảnh của WP cũng không được vượt */
+.rich-content figure,
+.rich-content .wp-block-image {
+    max-width: 100%;
+    margin: 12px 0 16px;
+}
+
+/* Nếu bạn muốn ảnh full-width trong bài */
+.rich-content .wp-block-image img,
+.rich-content figure img {
+    width: 100% !important;
+    display: block;
+}
+
+/* 4) Nếu ảnh nằm trong “khung bo góc” thì phải cắt phần tràn */
+.rich-content figure,
+.rich-content .wp-block-image {
+    overflow: hidden;
+    /* cực quan trọng khi có border-radius ở parent */
+}
+
+/* 5) Nếu có table trong bài (hay gây tràn ngang) */
+.rich-content table {
+    max-width: 100%;
+    display: block;
+    overflow-x: auto;
+}
+
+/* Align từ WP */
+.rich-content .aligncenter {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rich-content .alignleft {
+    float: left;
+    margin: 6px 16px 10px 0;
+    max-width: 55%;
+}
+
+.rich-content .alignright {
+    float: right;
+    margin: 6px 0 10px 16px;
+    max-width: 55%;
+}
+
+@media (max-width: 768px) {
+
+    .rich-content .alignleft,
+    .rich-content .alignright {
+        float: none;
+        margin: 12px 0 14px;
+        max-width: 100%;
+    }
+}
+
+/* ===== Lists ===== */
+.rich-content ul,
+.rich-content ol {
+    padding-left: 20px;
+    color: var(--rc-muted);
+}
+
+.rich-content li {
+    margin: 7px 0;
+}
+
+.rich-content li>ul,
+.rich-content li>ol {
+    margin-top: 8px;
+}
+
+/* ===== Blockquote ===== */
+.rich-content blockquote {
+    border-left: 4px solid rgba(0, 0, 0, .18);
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(248, 250, 252, .95);
+    color: rgba(0, 0, 0, .72);
+}
+
+/* ===== Tables ===== */
+.rich-content table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid var(--rc-soft);
+}
+
+.rich-content th,
+.rich-content td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rc-soft);
+    vertical-align: top;
+}
+
+.rich-content th {
+    background: rgba(248, 250, 252, 1);
+    text-align: left;
+    color: var(--rc-fg);
+}
+
+.rich-content tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===== Code ===== */
+.rich-content code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95em;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, .06);
+    color: rgba(15, 23, 42, .9);
+}
+
+.rich-content pre {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, .92);
+    color: rgba(255, 255, 255, .92);
+    overflow: auto;
+}
+
+.rich-content pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+/* ===== Embeds ===== */
+.rich-content iframe,
+.rich-content video {
+    width: 100%;
+    border: 0;
+    border-radius: var(--rc-radius);
+    margin: 12px 0 16px;
+}
+
+.rich-content .wp-block-embed__wrapper {
+    border-radius: var(--rc-radius);
+    overflow: hidden;
+}
+
+/* ===== “Card feel” for WP inline cards (optional) ===== */
+.rich-content div[style*="border-radius"][style*="border"] {
+    border-radius: var(--rc-radius) !important;
+    border: 1px solid var(--rc-soft) !important;
+    background: var(--rc-card) !important;
+}

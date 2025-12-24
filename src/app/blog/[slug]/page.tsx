@@ -4,6 +4,8 @@ import { Breadcrumb, Tag } from "antd";
 import { notFound } from "next/navigation";
 import { fetchBlogPostBySlug, fetchBlogPosts } from "@/lib/wp-blog";
 import { CopyUrlButton } from "@/components/util/CopyUrlButton";
+import RichContent from "@/components/util/RichContent";
+import { Suspense } from "react";
 
 type Props = {
     params: Promise<{ slug: string }>;
@@ -131,20 +133,16 @@ export default async function BlogDetailPage({ params }: Props) {
                                         {c}
                                     </Tag>
                                 ))}
-                                <CopyUrlButton />
+                                <Suspense fallback={null}>
+                                    <CopyUrlButton />
+                                </Suspense>
                             </div>
 
                             <p className="text-sm text-slate-700">{post.excerpt}</p>
                         </header>
 
                         {/* Nội dung bài viết */}
-                        <div className="mt-6 border-t pt-6 prose prose-sm md:prose-base max-w-none prose-img:rounded-xl prose-img:shadow">
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: post.contentHtml,
-                                }}
-                            />
-                        </div>
+                        <RichContent html={post.contentHtml} />
                     </div>
                 </article>
 

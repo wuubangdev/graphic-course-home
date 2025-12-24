@@ -3,6 +3,7 @@ import "./globals.css";
 import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/footer/Footer";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import "@/styles/lp-landing.css";
 
 export const metadata: Metadata = {
   title: "Khoá học giá rẻ",

@@ -1,5 +1,6 @@
 import CustomCarousel from '@/components/carousel/CustomCarousel'
 import { CopyUrlButton } from '@/components/util/CopyUrlButton';
+import RichContent from '@/components/util/RichContent';
 import { fetchLearnPressCourse, LpCourse } from '@/lib/learnpress';
 import { extractIdFromSlug, toSlug } from '@/lib/slug';
 import { notFound } from 'next/navigation';
@@ -30,7 +31,7 @@ const page = async ({ params }: Props) => {
             >
                 <div className='border-t-[1px] border-gray-400 py-8 grid grid-cols-3'>
                     <div className='px-4'>
-                        <div className='w-full aspect-video rounded-2xl overflow-hidden'>
+                        <div className='w-full aspect-[21/9] rounded-2xl overflow-hidden'>
                             <CustomCarousel listImage={[course.image, course.image]} />
                         </div>
                         <p className='text-center py-2 italic text-blue-600'>Xem thêm ảnh</p>
@@ -157,6 +158,9 @@ const page = async ({ params }: Props) => {
                             </div>
                             <span className='text-sm text-blue-500'>Xem chi tiết</span>
                         </div>
+                    </div>
+                    <div className='col-span-3 mt-8'>
+                        <RichContent html={course?.content || ""} />
                     </div>
                 </div>
             </div>

@@ -15,7 +15,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({ listImage }) => (
         className='w-full h-full'
     >
         {listImage && listImage.map((imageUrl, index) => (
-            <div key={"crs-" + index} className='w-full aspect-video relative'>
+            <div key={"crs-" + index} className='w-full aspect-[21/9] relative'>
                 <Image alt='carousel' src={imageUrl} fill objectFit='cover' />
             </div>
         ))}
