@@ -12,12 +12,9 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-    try {
-        const { posts } = await fetchBlogPosts({ page: 1, perPage: 20 });
-        return posts.map((p) => ({ slug: p.slug }));
-    } catch {
-        return [];
-    }
+    // Optional: prebuild một số bài phổ biến
+    const { posts } = await fetchBlogPosts({ page: 1, perPage: 20 });
+    return posts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({

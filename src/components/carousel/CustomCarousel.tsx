@@ -1,25 +1,25 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import Image from 'next/image';
+import { fileUrl, StrapiV5File } from '@/lib/strapi-lib/strapi-media';
 
 interface CustomCarouselProps {
-    listImage: string[];
+    listImage: StrapiV5File[];
 }
 
 const CustomCarousel: React.FC<CustomCarouselProps> = ({ listImage }) => (
     <Carousel
         autoplay={{ dotDuration: true }}
-        autoplaySpeed={5000}
+        autoplaySpeed={3000}
         arrows
         infinite
         className='w-full h-full'
     >
-        {listImage && listImage.map((imageUrl, index) => (
+        {listImage && listImage.map((image, index) => (
             <div key={"crs-" + index} className='w-full aspect-[21/9] relative'>
-                <Image alt='carousel' src={imageUrl} fill objectFit='cover' />
+                <Image alt='carousel' src={fileUrl(image) || ""} fill style={{ objectFit: 'cover' }} />
             </div>
         ))}
-
     </Carousel>
 );
 

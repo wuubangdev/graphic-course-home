@@ -12,6 +12,12 @@ const nextConfig = {
         hostname: "admin.khoahocdohoa.com",
         pathname: "/**",
       },
+      {
+        protocol: "http",
+        hostname: "103.173.66.91",
+        port: "1339",
+        pathname: "/**",
+      },
     ],
   },
 };

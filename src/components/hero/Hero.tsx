@@ -1,24 +1,31 @@
 import Image from 'next/image'
 import React from 'react'
-// import CustomCarousel from '../carousel/CustomCarousel'
 import LiItem from './LiItem'
+import { fetchHero } from '@/lib/strapi-lib/hero';
+import type { Hero } from '@/lib/strapi-lib/hero';
+import CustomCarousel from '../carousel/CustomCarousel';
+import { fileUrl } from '@/lib/strapi-lib/strapi-media';
 
-const Hero = () => {
+const Hero = async () => {
+    const res = await fetchHero();
+    const heroData: Hero | null = res.data;
+    const listImages = heroData?.listMedia || [];
+    const listSingleImages = heroData?.listSingleMedia || [];
     return (
-        <section className='w-full pt-44 h-screen'>
+        <section className='w-full py-8'>
             {/* Background */}
-            {/* <div className='h-full w-full absolute top-0 left-0 -z-10'>
+            <div className='h-full w-full absolute top-0 left-0 -z-10'>
                 <Image
                     alt='bg-hero'
                     src={'/hero/banner_bg.jpg'}
                     fill
                     className='object-fill object-center'
                 />
-            </div> */}
+            </div>
             <div
-                className='mx-auto container px-4 flex flex-col gap-2'
+                className='mx-auto container px-4 flex flex-col gap-3'
             >
-                <div className='grid grid-cols-4 flex-1 gap-2'>
+                <div className='grid grid-cols-4 flex-1 gap-3'>
                     <div className='rounded-lg bg-white border-[1px] border-gray-300 p-4'>
                         <ul>
                             <li>
@@ -77,31 +84,53 @@ const Hero = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className='col-span-2 aspect-video rounded-lg overflow-hidden'>
-                        {/* <CustomCarousel /> */}
+                    <div className='col-span-2 aspect-[21/9] rounded-lg overflow-hidden'>
+                        <CustomCarousel listImage={listImages} />
                     </div>
-                    <div className='flex flex-col gap-2'>
-                        <div className='aspect-video rounded-lg overflow-hidden relative'>
-                            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                        </div>
-                        <div className='aspect-video rounded-lg overflow-hidden relative'>
-                            <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                        </div>
+                    <div className='flex flex-col gap-3'>
+                        {listSingleImages.length > 0 && listSingleImages.map((item, i) => {
+                            if (i > 1) return null;
+                            const seconds = 2 + i * 2;
+                            return (
+                                <div
+                                    key={item.id}
+                                    className='aspect-[21/9] overflow-hidden relative rounded-lg animate-[bounceSoft_infinite]'
+                                    style={{
+                                        animationDuration: `${seconds}s`,
+                                        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px"
+                                    }}
+                                >
+                                    <Image alt='carousel' src={fileUrl(item) || "/test.png"} fill style={{ objectFit: 'cover' }}
+                                        className='cursor-pointer hover:scale-105 duration-300'
+                                    />
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
-                <div className='grid grid-cols-4 gap-2'>
-                    <div className='aspect-video overflow-hidden relative rounded-lg'>
-                        <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                    </div>
-                    <div className='aspect-video overflow-hidden relative rounded-lg'>
-                        <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                    </div>
-                    <div className='aspect-video overflow-hidden relative rounded-lg'>
-                        <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                    </div>
-                    <div className='aspect-video overflow-hidden relative rounded-lg'>
-                        <Image alt='carousel' src={'/test.png'} fill objectFit='cover' />
-                    </div>
+                <div className='grid grid-cols-4 gap-3'>
+                    {listSingleImages.length > 0 && listSingleImages.map((item, i) => {
+                        if (i <= 1 || i > 10) return null;
+                        const seconds = 2 + i * 1;
+                        return (
+                            <div
+                                key={item.id}
+                                className='aspect-[21/9] overflow-hidden relative rounded-lg animate-[bounceSoft_infinite]'
+                                style={{
+                                    animationDuration: `${seconds}s`,
+                                    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+                                }}
+                            >
+                                <Image
+                                    alt='carousel'
+                                    src={fileUrl(item) || "/test.png"}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    className='cursor-pointer hover:scale-105 duration-300'
+                                />
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         </section>
