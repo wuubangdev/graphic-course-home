@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { fetchAllCourseCategories, LpCourseCategoryTerm } from '@/lib/course_category';
 import CourseWrapper from './course-card/CourseWrapper';
-import { Button } from 'antd';
 
 const ListCourses = async () => {
     const categories: LpCourseCategoryTerm[] = await fetchAllCourseCategories({
