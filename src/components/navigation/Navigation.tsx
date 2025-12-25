@@ -31,7 +31,7 @@ const Navigation = () => {
             <div
                 className='mx-auto w-[80%]'
             >
-                <div className='grid grid-cols-5 px-4'>
+                <div className='grid grid-cols-4 px-4 gap-4'>
                     <div className='flex'>
                         {/* Logo */}
                         <Link href={"/"} className='aspect-video w-2/3 relative cursor-pointer'>
@@ -44,52 +44,51 @@ const Navigation = () => {
                             />
                         </Link>
                     </div>
-                    <div className='flex py-6 col-span-2 pr-8'>
-                        <input
-                            value={q}
-                            onChange={(e) => setQ(e.target.value)}
-                            onKeyDown={onKeyDown}
-                            type="text"
-                            placeholder='Tìm kím sản phẩm'
-                            className='bg-white flex-1 border-r-0 rounded-l px-4 py-2 focus:outline-none'
-                        />
-                        <div
-                            onClick={onSearch}
-                            className='bg-blue-800 rounded-r border-l-0 flex items-center justify-center px-2'
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
-                                className="size-6 text-white hover:text-gray-400 cursor-pointer duration-300"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className=' flex justify-center gap-1 items-center '>
-                        <div className='p-2 rounded-full border-[1px] border-white'>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 text-white">
-                                <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                        <div className='text-white'>
-                            <span className='px-2 py-1 hover:text-amber-500 duration-300 cursor-pointer'>Đăng nhập</span>/
-                            <span className='px-2 py-1 hover:text-amber-500 duration-300 cursor-pointer'>Đăng ký</span>
-                        </div>
-                    </div>
-                    {/* Right bar */}
-                    <div className='flex justify-end items-center '>
-                        <div className='cursor-pointer flex border-[1px] border-gray-300 rounded-md px-4 py-2 gap-2 group hover:shadow-sm'>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
-                                className="size-6 text-white group-hover:text-amber-500 duration-300"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                    d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                            </svg>
-                            <span className='text-white group-hover:scale-105 duration-300'>Giỏ hàng</span>
+                    <div className='flex items-center py-6 col-span-2 px-8'>
+                        <div className='bg-white flex flex-1 rounded-lg p-0.25 border-gray-300 overflow-hidden'>
+                            <input
+                                value={q}
+                                onChange={(e) => setQ(e.target.value)}
+                                onKeyDown={onKeyDown}
+                                type="text"
+                                placeholder='Tìm kím sản phẩm'
+                                className='bg-white flex-1 rounded-lg px-4 py-2 focus:outline-none'
+                            />
                             <div
-                                className='rounded-full aspect-square px-2 flex justify-center duration-300
-                                items-center bg-white group-hover:bg-amber-500 group-hover:text-white top-0 right-0 text-sm font-semibold'
-                            >0</div>
+                                onClick={onSearch}
+                                className='bg-blue-500 rounded-lg flex items-center justify-center px-4 text-white cursor-pointer hover:bg-blue-700 duration-300'
+                            >
+                                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+                                    className="size-6 text-white hover:text-gray-400 cursor-pointer duration-300"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg> */}
+                                Tìm kiếm
+                            </div>
                         </div>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                        <Link href="/login" className=' flex justify-center gap-1 items-center '>
+                            <span
+                                className='py-2 px-4 rounded-lg text-blue-700 hover:text-white hover:bg-blue-700 duration-300 bg-white cursor-pointer'
+                            >Đăng nhập</span>
+                        </Link>
+                        {/* Right bar */}
+                        <Link href="/cart" className='flex justify-end items-center relative'>
+                            <div className='cursor-pointer flex border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 gap-2 hover:bg-blue-700 hover:shadow-sm'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
+                                    className="size-6 text-white duration-300"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                </svg>
+                                <span className='text-white duration-300'>Giỏ hàng</span>
+                                <div
+                                    className='absolute rounded-full aspect-square px-2 flex justify-center duration-300
+                                items-center bg-white -top-2 -right-2 text-sm'
+                                >0</div>
+                            </div>
+                        </Link>
                     </div>
                 </div>
                 <div className='flex justify-between px-4'>
