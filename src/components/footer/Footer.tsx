@@ -5,21 +5,9 @@ import React from 'react'
 const Footer = () => {
     return (
         <footer id="site-footer" className='pt-28 pb-1 bg-blue-900 text-[#b2bdcd]'>
-            <div className='container mx-auto px-4 text-center'>
+            <div className='mx-auto px-4 text-center'>
                 <div className='grid grid-cols-3'>
-                    <div className='flex flex-col items-center gap-2'>
-                        <Link href={'/'} className='w-1/2 aspect-video relative cursor-pointer overflow-hidden'>
-                            <Image
-                                alt='logo'
-                                src={'/footer/169Log.png'}
-                                fill={true}
-                                style={{ objectFit: 'contain' }}
-                                className='w-full h-full hover:scale-105 duration-300'
-                            />
-                        </Link>
-                        {/* <p className='text-justify'>when an unknown printer took galley of type and scrambled it to make pspecimen bookt has.</p> */}
-                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>khoahocdohoa@gmail.com</p>
-                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>+84 123 456 789</p>
+                    <div className='flex flex-col items-center justify-start gap-1'>
                         <div className='flex items-center gap-3'>
                             <Link href={""} target='_blank' className='group' >
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,256,256" className='scale-75 group-hover:scale-90 duration-500'>
@@ -50,6 +38,18 @@ const Footer = () => {
                                 </svg>
                             </Link>
                         </div>
+                        <Link href={'/'} className='w-1/2 aspect-video relative cursor-pointer overflow-hidden'>
+                            <Image
+                                alt='logo'
+                                src={'/footer/169Log.png'}
+                                fill={true}
+                                style={{ objectFit: 'contain' }}
+                                className='w-full h-full hover:scale-105 duration-300'
+                            />
+                        </Link>
+                        {/* <p className='text-justify'>when an unknown printer took galley of type and scrambled it to make pspecimen bookt has.</p> */}
+                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>khoahocdohoa@gmail.com</p>
+                        <p className='text-justify text-white font-semibold cursor-pointer hover:text-red-700 hover:translate-x-1 duration-300'>+84 123 456 789</p>
                     </div>
                     <div className='flex flex-col items-center gap-1'>
                         <h2 className='text-2xl font-semibold mb-2 text-white'>CHÍNH SÁCH & BẢO MẬT</h2>

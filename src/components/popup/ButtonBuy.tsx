@@ -7,7 +7,7 @@ type Props = {
     showAfter?: number;        // px scroll để hiện
 };
 
-export default function ButtonBuy({ footerSelector = "#site-footer", showAfter = 300 }: Props) {
+export default function ButtonBuy({ footerSelector = "#site-footer", showAfter = 500 }: Props) {
     const [show, setShow] = useState(false);
     const [footerInView, setFooterInView] = useState(false);
 

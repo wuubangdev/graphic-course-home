@@ -28,8 +28,8 @@ const page = async ({ params }: Props) => {
         <div className='w-full'>
             <section className="relative overflow-hidden bg-[#0049d9] text-white min-h-screen">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#0049d9] via-[#0049d9]/60 to-[#00153a]" />
-                <div className="relative max-w-6xl mx-auto px-4 py-12">
-                    <div className="max-w-3xl space-y-2">
+                <div className="relative max-w-[80%] mx-auto px-4 py-12">
+                    <div className="w-full space-y-4">
                         <p className="text-xs uppercase tracking-[0.25em] text-blue-100">
                             Trang Giới Thiệu
                         </p>
@@ -40,7 +40,7 @@ const page = async ({ params }: Props) => {
                             Khai phá toàn bộ tiềm năng sáng tạo với hệ sinh thái đào tạo 3D,
                             VFX và Phát triển Game chuyên sâu và toàn diện nhất Việt Nam.
                         </h2>
-                        <div className='w-1/2 aspect-[21/9] relative mb-6'>
+                        <div className='w-full aspect-[21/9] relative mb-6'>
                             <Image alt='carousel' src={course.image || ""} fill style={{ objectFit: 'cover' }} />
                         </div>
                         <div className='flex gap-2'>
@@ -113,7 +113,7 @@ const page = async ({ params }: Props) => {
                     </div>
                 </div>
             </section>
-            <main className="max-w-6xl mx-auto px-4 py-6 space-y-16 lg:space-y-20">
+            <main className="max-w-[80%] mx-auto px-4 py-6 space-y-16 lg:space-y-20">
                 <RichContent html={course?.content || ""} />
             </main>
             <ButtonBuy />

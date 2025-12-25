@@ -8,7 +8,7 @@ const ListCourses = async () => {
     });
     return (
         <section className='pt-8 pb-24 relative'>
-            <div className='container px-4 mx-auto z-20'>
+            <div className='w-[80%] px-4 mx-auto z-20'>
                 {/* Heading */}
                 <div className='grid grid-cols-3'>
                     <div className='flex flex-col items-start'>
@@ -16,13 +16,14 @@ const ListCourses = async () => {
                         <h1 className='text-3xl font-semibold'>Các <span className='text-blue-600'>Khóa Học</span> Chính</h1>
                     </div>
                     <div className='flex justify-end items-end col-span-2'>
-                        <div className='flex gap-9'>
+                        <div className='flex gap-2 flex-wrap items-end'>
                             {categories.map((category) => {
                                 if (category.parent === 0) {
                                     return (
                                         <button
                                             key={category.id}
-                                            className='hover:text-blue-600 font-semibold text-gray-600 cursor-pointer duration-300'>
+                                            className='hover:text-blue-600 font-semibold text-gray-600 
+                                            cursor-pointer duration-300 bg-blue-200 px-3 rounded-md'>
                                             {category.name}
                                         </button>
                                     )

@@ -29,7 +29,7 @@ const Navigation = () => {
             }}
         >
             <div
-                className='mx-auto container'
+                className='mx-auto w-[80%]'
             >
                 <div className='grid grid-cols-5 px-4'>
                     <div className='flex'>

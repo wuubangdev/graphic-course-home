@@ -12,7 +12,7 @@ const Hero = async () => {
     const listImages = heroData?.listMedia || [];
     const listSingleImages = heroData?.listSingleMedia || [];
     return (
-        <section className='w-full py-8'>
+        <section className='w-full py-8 relative overflow-hidden'>
             {/* Background */}
             <div className='h-full w-full absolute top-0 left-0 -z-10'>
                 <Image
@@ -23,7 +23,7 @@ const Hero = async () => {
                 />
             </div>
             <div
-                className='mx-auto container px-4 flex flex-col gap-3'
+                className='mx-auto w-[80%] px-4 flex flex-col gap-3'
             >
                 <div className='grid grid-cols-4 flex-1 gap-3'>
                     <div className='rounded-lg bg-white border-[1px] border-gray-300 p-4'>
