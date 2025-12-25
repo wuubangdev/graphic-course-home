@@ -1,4 +1,4 @@
-import CustomCarousel from '@/components/carousel/CustomCarousel'
+import CustomCarouselImage from '@/components/carousel/CustomCarouselImage';
 import { CopyUrlButton } from '@/components/util/CopyUrlButton';
 import RichContent from '@/components/util/RichContent';
 import { fetchLearnPressCourse, LpCourse } from '@/lib/learnpress';
@@ -32,7 +32,7 @@ const page = async ({ params }: Props) => {
                 <div className='border-t-[1px] border-gray-400 py-8 grid grid-cols-3'>
                     <div className='px-4'>
                         <div className='w-full aspect-[21/9] rounded-2xl overflow-hidden'>
-                            <CustomCarousel listImage={[course.image, course.image]} />
+                            <CustomCarouselImage listImage={[course.image, course.image]} />
                         </div>
                         <p className='text-center py-2 italic text-blue-600'>Xem thêm ảnh</p>
                     </div>

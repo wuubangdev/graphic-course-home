@@ -1,15 +1,15 @@
-export type StrapiV5Meta = { meta?: any };
+export type StrapiV5Meta = { meta?: unknown };
 
 // Single type: { data: T | null, meta: {} }
 export type StrapiV5Single<T> = {
     data: T | null;
-    meta?: any;
+    meta?: unknown;
 };
 
 // Collection type: { data: T[], meta: { pagination?... } }
 export type StrapiV5Collection<T> = {
     data: T[];
-    meta?: any;
+    meta?: unknown;
 };
 
 export const unwrapSingle = <T>(res: StrapiV5Single<T>) => res.data;

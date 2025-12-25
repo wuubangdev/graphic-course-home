@@ -13,8 +13,8 @@ export function strapiMediaUrl(url?: string | null) {
 
 export class StrapiError extends Error {
     status: number;
-    details?: any;
-    constructor(message: string, status: number, details?: any) {
+    details?: unknown;
+    constructor(message: string, status: number, details?: unknown) {
         super(message);
         this.name = "StrapiError";
         this.status = status;
@@ -22,10 +22,10 @@ export class StrapiError extends Error {
     }
 }
 
-function buildQuery(obj: Record<string, any> = {}) {
+function buildQuery(obj: Record<string, unknown> = {}) {
     const params = new URLSearchParams();
 
-    const append = (key: string, value: any) => {
+    const append = (key: string, value: unknown) => {
         if (value === undefined || value === null) return;
 
         if (Array.isArray(value)) {
@@ -48,7 +48,7 @@ function buildQuery(obj: Record<string, any> = {}) {
 export async function strapiFetch<T>(
     path: string,
     opts?: {
-        query?: Record<string, any>;
+        query?: Record<string, unknown>;
         cache?: RequestCache;
         revalidate?: number;
         tags?: string[];
@@ -68,14 +68,14 @@ export async function strapiFetch<T>(
     });
 
     const text = await res.text();
-    let data: any = null;
+    let data: unknown = null;
     try {
         data = text ? JSON.parse(text) : null;
     } catch { }
 
     if (!res.ok) {
         throw new StrapiError(
-            data?.error?.message || `Strapi fetch failed: ${res.status}`,
+            `Strapi fetch failed: ${res.status}`,
             res.status,
             data
         );
