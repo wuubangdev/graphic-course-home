@@ -24,7 +24,7 @@ const CourseWrapper: React.FC<CourseWrapperProps> = async ({ categoryId }) => {
                     <Link
                         href={"/khoa-hoc?category=" + categoryId}
                         className='py-1 px-4 border border-gray-200 text-white hover:opacity-70
-                         duration-200 rounded-2xl bg-blue-600 '>
+                         duration-200 rounded-2xl bg-red-800 '>
                         Xem tất cả
                     </Link>
                 </div>
