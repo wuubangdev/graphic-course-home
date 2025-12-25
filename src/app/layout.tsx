@@ -4,6 +4,7 @@ import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/footer/Footer";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "@/styles/lp-landing.css";
+import ScrollToTopButton from "@/components/popup/ScrollToTopButton";
 
 export const metadata: Metadata = {
   title: {
@@ -59,6 +60,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
+          <ScrollToTopButton />
         </AntdRegistry>
       </body>
     </html>

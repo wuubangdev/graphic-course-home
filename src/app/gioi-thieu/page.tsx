@@ -568,7 +568,6 @@ export default function AboutKhoahocDohoaPage() {
                         </Button>
                     </div>
                 </section>
-
                 {/* Section 9: FAQ */}
                 <section id="faq" className="space-y-6">
                     <h2 className="text-2xl md:text-3xl font-bold">Câu hỏi thường gặp</h2>

@@ -1,6 +1,6 @@
 /* ===== Container + tokens (đổi 1 lần, áp toàn site) ===== */
 .rich-content {
-    --rc-max: 920px;
+    /* --rc-max: 920px; */
     --rc-fg: rgba(0, 0, 0, .88);
     --rc-muted: rgba(0, 0, 0, .72);
     --rc-soft: rgba(0, 0, 0, .08);
@@ -8,7 +8,7 @@
     --rc-radius: 16px;
     --rc-radius-sm: 12px;
 
-    max-width: var(--rc-max);
+    /* max-width: var(--rc-max); */
     margin: 0 auto;
     padding: 16px 12px 28px;
     color: var(--rc-fg);

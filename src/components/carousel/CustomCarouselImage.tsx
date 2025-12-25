@@ -1,7 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import Image from 'next/image';
-import { fileUrl, StrapiV5File } from '@/lib/strapi-lib/strapi-media';
 
 interface CustomCarouselImageProps {
     listImage: string[];
