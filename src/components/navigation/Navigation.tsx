@@ -74,7 +74,7 @@ const Navigation = () => {
                         <AuthHeaderButton />
                         {/* Right bar */}
                         <Link href="/cart" className="flex justify-center items-center relative">
-                            <div className="cursor-pointer flex items-end border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm relative">
+                            <div className="cursor-pointer flex items-end border-[1px] border-gray-300 rounded-md duration-300 px-4 py-1 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm relative">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
