@@ -97,14 +97,9 @@ export default async function BlogDetailPage({ params }: Props) {
 
             <div className="max-w-4xl mx-auto px-4 py-8 md:py-10">
                 {/* Breadcrumb */}
-                <Breadcrumb
-                    items={[
-                        { title: <Link href="/">Trang chủ</Link> },
-                        { title: <Link href="/blog">Blog</Link> },
-                        { title: post.title },
-                    ]}
-                />
-
+                <span className="text-[1rem]">
+                    <Link href="/" className="text-[1rem] text-gray-500">Trang chủ</Link> / <Link href="/blog" className="text-[1rem] text-gray-500">Blog</Link> / <span className="text-[1rem]">{post.title}</span>
+                </span>
                 {/* Header */}
                 <article className="mt-6 bg-white rounded-3xl shadow-sm overflow-hidden">
                     {post.thumbnail && (

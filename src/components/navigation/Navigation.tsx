@@ -52,7 +52,7 @@ const Navigation = () => {
                                 onKeyDown={onKeyDown}
                                 type="text"
                                 placeholder='Tìm kím sản phẩm'
-                                className='bg-white flex-1 rounded-lg px-4 py-2 focus:outline-none'
+                                className='bg-white flex-1 rounded-lg px-4 py-2 2xl:py-2 focus:outline-none'
                             />
                             <div
                                 onClick={onSearch}
@@ -67,15 +67,15 @@ const Navigation = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 2xl:gap-4 justify-end'>
                         <Link href="/login" className=' flex justify-center gap-1 items-center '>
                             <span
-                                className='py-2 px-4 rounded-lg text-blue-700 hover:text-white hover:bg-blue-700 duration-300 bg-white cursor-pointer'
+                                className='py-2 px-4 2xl:py-2 2xl:px-4 rounded-lg text-blue-700 hover:text-white hover:bg-blue-700 duration-300 bg-white cursor-pointer'
                             >Đăng nhập</span>
                         </Link>
                         {/* Right bar */}
                         <Link href="/cart" className='flex justify-end items-center relative'>
-                            <div className='cursor-pointer flex border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 gap-2 hover:bg-blue-700 hover:shadow-sm'>
+                            <div className='cursor-pointer flex border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
                                     className="size-6 text-white duration-300"
                                 >

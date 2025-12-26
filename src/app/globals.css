@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
@@ -29,6 +30,37 @@ body {
 html {
   font-family: "Lexend Deca", sans-serif;
   color: #082a5e;
+  font-size: 16px;
+}
+
+@media (min-width: 1536px) {
+
+  /* 2xl */
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 2560px) {
+
+  /* 1440p ultrawide / 4K scaled */
+  html {
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 3840px) {
+
+  /* 4K native width */
+  html {
+    font-size: 42px;
+  }
 }
 
 @keyframes bounceSoft {
@@ -43,4 +75,147 @@ html {
   }
 
   /* chỉnh -3px/-6px */
+}
+
+
+/* =========================
+   WP / Rich Content Styling
+   ========================= */
+
+/* WP alignment */
+.rich-content .aligncenter {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.rich-content .alignleft {
+  float: left;
+  margin: .25rem 1rem .75rem 0;
+}
+
+.rich-content .alignright {
+  float: right;
+  margin: .25rem 0 .75rem 1rem;
+}
+
+/* Responsive embeds */
+.rich-content iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: auto;
+}
+
+.rich-content figure {
+  margin: 1.25rem 0;
+  max-width: 100%;
+}
+
+/* Ảnh: mặc định KHÔNG upscale (tránh 2K/4K bị bể/méo do phóng ảnh nhỏ) */
+.rich-content img {
+  width: auto;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  border-radius: 0.5rem;
+}
+
+/* Chỉ các ảnh “lớn” (WP block/size-full/aligncenter) mới full width */
+.rich-content :where(.wp-block-image img, img.size-full, img.aligncenter) {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* (Hiếm khi cần) chống rule khác làm méo */
+.rich-content img {
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  border-radius: 0.5rem;
+}
+
+/* ===== RichContent layout helpers ===== */
+.rich-content .rc-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1vw, 18px);
+  margin: 0 0 clamp(12px, 1.2vw, 20px) 0;
+}
+
+/* Buttons: canh giữa ngang + dọc, padding scale theo màn hình */
+.rich-content .rc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(44px, 3.2vw, 72px);
+  padding: clamp(10px, 0.9vw, 18px) clamp(14px, 1.2vw, 26px);
+  border-radius: clamp(10px, 0.8vw, 14px);
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.rich-content .rc-btn--dark {
+  background: #111;
+  color: #fff;
+}
+
+.rich-content .rc-btn--light {
+  background: #f3f4f6;
+  color: #111;
+}
+
+.rich-content .rc-btn--white {
+  background: #fff;
+  color: #111;
+}
+
+/* Cards/boxes: padding scale */
+.rich-content .rc-card {
+  border-radius: clamp(12px, 1vw, 18px);
+  padding: clamp(12px, 1.2vw, 22px) clamp(14px, 1.3vw, 26px);
+  margin: 0 0 clamp(12px, 1.2vw, 18px) 0;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.rich-content .rc-card--outline {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+}
+
+.rich-content .rc-card--featured {
+  background: transparent;
+  border: 2px solid #111;
+}
+
+/* CTA cuối: box đen */
+.rich-content .rc-cta {
+  background: #111;
+  color: #fff;
+  border-radius: clamp(14px, 1.2vw, 22px);
+  padding: clamp(16px, 1.6vw, 36px) clamp(16px, 1.8vw, 44px);
+  margin-top: clamp(16px, 1.6vw, 28px);
+}
+
+.rich-content .rc-cta h3,
+.rich-content .rc-cta p {
+  color: inherit;
+}
+
+/* HR */
+.rich-content .rc-hr {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: clamp(16px, 1.6vw, 28px) 0;
+}
+
+/* Images: scale đúng, không méo */
+.rich-content img {
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  display: block;
 }
