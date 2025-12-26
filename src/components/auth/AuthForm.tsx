@@ -14,12 +14,26 @@ type Props = {
     redirectTo?: string;
 };
 
+type LoginValues = {
+    identifier: string;
+    password: string;
+};
+
+type RegisterValues = {
+    email: string;
+    username?: string;
+    password: string;
+};
+
+type FormValues = LoginValues | RegisterValues;
+
+
 export default function AuthFormAntd({ mode, redirectTo = "/" }: Props) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
 
-    async function onFinish(values: any) {
+    async function onFinish(values: FormValues) {
         setErr(null);
         setLoading(true);
 
@@ -28,11 +42,18 @@ export default function AuthFormAntd({ mode, redirectTo = "/" }: Props) {
 
             const payload =
                 mode === "login"
-                    ? { identifier: values.identifier.trim(), password: values.password }
+                    ? {
+                        identifier: (values as LoginValues).identifier.trim(),
+                        password: (values as LoginValues).password,
+                    }
                     : {
-                        email: values.email.trim(),
-                        username: (values.username?.trim() || values.email.split("@")[0] || "").trim(),
-                        password: values.password,
+                        email: (values as RegisterValues).email.trim(),
+                        username: (
+                            (values as RegisterValues).username?.trim() ||
+                            (values as RegisterValues).email.split("@")[0] ||
+                            ""
+                        ).trim(),
+                        password: (values as RegisterValues).password,
                     };
 
             const res = await fetch(endpoint, {
