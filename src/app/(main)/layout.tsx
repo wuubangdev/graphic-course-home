@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import "antd/dist/reset.css";
+import Navigation from "@/components/navigation/Navigation";
+import Footer from "@/components/footer/Footer";
+import ScrollToTopButton from "@/components/popup/ScrollToTopButton";
 
 export const metadata: Metadata = {
   title: {
-    default: "Auth | KHOAHOCDOHOA.COM",
+    default: "Khóa học Đồ họa | KHOAHOCDOHOA.COM",
     template: "%s | KHOAHOCDOHOA.COM",
   },
   description:
@@ -44,19 +44,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="en">
-      <body
-      >
-        <AntdRegistry>
-          {children}
-        </AntdRegistry>
-      </body>
-    </html>
-  );
+    <main>
+      <Navigation />
+      {children}
+      <Footer />
+      <ScrollToTopButton />
+    </main>
+  )
 }
