@@ -175,24 +175,18 @@ export default function AuthHeaderButton() {
                     </div>
                 )}
             >
-                <button
-                    type="button"
-                    className="flex items-center gap-2 rounded-full bg-white/90 hover:bg-white px-2 py-1 duration-300"
-                    style={{ border: "1px solid rgba(255,255,255,0.55)" }}
+                <Avatar
+                    size={34}
+                    className="cursor-pointer border-white"
+                    style={{
+                        background: "#1e64e9",
+                        color: "#fff",
+                        fontWeight: 700,
+                        border: "1px solid #fff",
+                    }}
                 >
-                    <Avatar
-                        size={34}
-                        className="cursor-pointer"
-                        style={{
-                            background: "#1e64e9",
-                            color: "#fff",
-                            fontWeight: 700,
-                            border: "1px solid #fff",
-                        }}
-                    >
-                        {initial}
-                    </Avatar>
-                </button>
+                    {initial}
+                </Avatar>
             </Dropdown>
         </>
     );
