@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/footer/Footer";
 import ScrollToTopButton from "@/components/popup/ScrollToTopButton";
+import { CartProvider } from "@/components/card/CartProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -47,10 +48,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <main>
-      <Navigation />
-      {children}
-      <Footer />
-      <ScrollToTopButton />
+      <CartProvider>
+        <Navigation />
+        {children}
+        <Footer />
+        <ScrollToTopButton />
+      </CartProvider>
     </main>
   )
 }

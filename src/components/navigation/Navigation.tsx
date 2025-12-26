@@ -4,10 +4,13 @@ import Image from 'next/image'
 import MenuItem from './MenuItem'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import AuthHeaderButton from '../util/AuthHeaderButton'
+import { useCart } from '../card/CartProvider'
 
 const Navigation = () => {
     const router = useRouter();
     const [q, setQ] = useState("");
+    const { totalQty } = useCart();
 
     function onSearch() {
         const keyword = q.trim();
@@ -68,25 +71,38 @@ const Navigation = () => {
                         </div>
                     </div>
                     <div className='flex items-center gap-2 2xl:gap-4 justify-end'>
-                        <Link href="/login" className=' flex justify-center gap-1 items-center '>
-                            <span
-                                className='py-2 px-4 2xl:py-2 2xl:px-4 rounded-lg text-blue-700 hover:text-white hover:bg-blue-700 duration-300 bg-white cursor-pointer'
-                            >Đăng nhập</span>
-                        </Link>
+                        <AuthHeaderButton />
                         {/* Right bar */}
-                        <Link href="/cart" className='flex justify-end items-center relative'>
-                            <div className='cursor-pointer flex border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"
-                                    className="size-6 text-white duration-300"
+                        <Link href="/cart" className="flex justify-center items-center relative">
+                            <div className="cursor-pointer flex items-end border-[1px] border-gray-300 rounded-md duration-300 px-4 py-2 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm relative">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="size-6 text-white"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                                    />
                                 </svg>
-                                <span className='text-white duration-300'>Giỏ hàng</span>
+
+                                <span className="text-white duration-300">Giỏ hàng</span>
+
+                                {/* badge */}
                                 <div
-                                    className='absolute rounded-full aspect-square px-2 flex justify-center duration-300
-                                items-center bg-white -top-2 -right-2 text-sm'
-                                >0</div>
+                                    className={[
+                                        "absolute rounded-full aspect-square px-2 flex justify-center items-center",
+                                        "bg-white text-sm -top-2 -right-2 duration-300",
+                                        totalQty > 0 ? "text-blue-700" : "text-gray-400",
+                                    ].join(" ")}
+                                    aria-label={`Cart items: ${totalQty}`}
+                                >
+                                    {totalQty > 99 ? "99+" : totalQty}
+                                </div>
                             </div>
                         </Link>
                     </div>

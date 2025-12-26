@@ -1,4 +1,6 @@
 import ButtonBuy from '@/components/popup/ButtonBuy';
+import AddToCartButton from '@/components/util/AddToCartButton';
+import PayNowButton from '@/components/util/PayNowButton';
 import RichContent from '@/components/util/RichContent';
 import { fetchLearnPressCourse, LpCourse } from '@/lib/learnpress';
 import { extractIdFromSlug, toSlug } from '@/lib/slug';
@@ -54,26 +56,11 @@ const page = async ({ params }: Props) => {
                                 }
                             </div>
                         </div>
-                        <div className='py-3 border-t-[1px] border-gray-300 flex gap-2'>
-                            <button
-                                className='border-[1px] rounded-md px-8 py-3 bg-blue-600 text-white flex gap-1
-                                    hover:bg-blue-400 duration-300 cursor-pointer'
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                    <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
-                                    <path fillRule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-7.5Zm-18 3.75a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" clipRule="evenodd" />
-                                </svg>
-                                Mua ngay
-                            </button>
-                            <button
-                                className='border-[1px] border-blue-500 text-blue-600 rounded-md px-8 py-3 
-                                    flex gap-1 hover:bg-blue-400 bg-white hover:text-white duration-300 cursor-pointer'
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                    <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
-                                </svg>
-                                Thêm vào giỏ
-                            </button>
+                        <div className='py-3 border-t-[1px] border-gray-300 flex gap-2 justify-start'>
+                            <PayNowButton />
+                            <AddToCartButton
+                                item={{ id: "digital:tools-pack", title: "Bộ Plugin Retouch", price: 199000 }}
+                            />
                         </div>
                     </div>
                     <div className="mt-4 border border-white/15 bg-white/5 backdrop-blur rounded-2xl px-4 py-4">
