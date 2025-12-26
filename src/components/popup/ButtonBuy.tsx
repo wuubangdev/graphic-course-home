@@ -49,13 +49,14 @@ export default function ButtonBuy({ footerSelector = "#site-footer", showAfter =
                 className={[
                     "flex items-center gap-3 p-2",
                     "rounded-2xl border border-white/30",
-                    "bg-white/80 backdrop-blur",
+                    "bg-white/60 backdrop-blur",
                     "shadow-lg",
                     "max-w-[92vw]",
                 ].join(" ")}
             >
                 <button
-                    className="flex items-center gap-2 rounded-xl px-5 py-3 font-semibold text-white bg-blue-600 hover:bg-blue-500 active:scale-[0.99] transition"
+                    className="flex items-center gap-2 rounded-xl px-5 py-3 font-semibold text-white
+                     bg-blue-600 hover:bg-blue-500 active:scale-[0.99] transition cursor-pointer"
                 >
                     {/* icon */}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
@@ -66,7 +67,8 @@ export default function ButtonBuy({ footerSelector = "#site-footer", showAfter =
                 </button>
 
                 <button
-                    className="flex items-center gap-2 rounded-xl px-5 py-3 font-semibold border border-blue-500 text-blue-600 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.99] transition"
+                    className="flex items-center gap-2 rounded-xl px-5 py-3 font-semibold border border-blue-500
+                     text-blue-600 bg-white hover:bg-blue-600 hover:text-white active:scale-[0.99] transition cursor-pointer"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                         <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592A3.752 3.752 0 0 0 4.5 17.25c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25Z" />
