@@ -1,6 +1,6 @@
-import { strapiFetch } from "./strapi";
-import type { StrapiV5Single } from "./strapi-types";
-import type { StrapiV5File } from "./strapi-media";
+import { strapiFetch } from "../strapi";
+import type { StrapiV5Single } from "../strapi-types";
+import type { StrapiV5File } from "../strapi-media";
 
 export type Hero = {
     id: number;
@@ -10,6 +10,7 @@ export type Hero = {
     publishedAt?: string;
     listMedia: StrapiV5File[];
     listSingleMedia: StrapiV5File[];
+    mediaBg?: StrapiV5File;
 };
 
 export async function fetchHero() {
@@ -18,6 +19,7 @@ export async function fetchHero() {
             populate: {
                 listMedia: true,
                 listSingleMedia: true,
+                mediaBg: true,
             },
         },
         revalidate: 60,
