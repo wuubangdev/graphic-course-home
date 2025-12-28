@@ -1,53 +1,25 @@
 import React, { Fragment } from 'react'
-import { fetchAllCourseCategories, LpCourseCategoryTerm } from '@/lib/course_category';
 import CourseWrapper from './course-card/CourseWrapper';
+import { Category, fetchCategories } from '@/lib/strapi-lib/api/category';
 
 const ListCourses = async () => {
-    const categories: LpCourseCategoryTerm[] = await fetchAllCourseCategories({
-        baseUrl: process.env.WP_BASE_URL!,
-    });
+    const res = await fetchCategories();
+    const categories: Category[] = res.data;
     return (
         <section className='pt-8 pb-24 relative'>
             <div className='w-[80%] px-4 mx-auto z-20'>
-                {/* Heading */}
-                {/* <div className='grid grid-cols-3'> */}
-                {/* <div className='flex flex-col items-start'> */}
-                {/* <p className='px-4 py-2 bg-blue-100 text-blue-600 rounded mb-4 font-semibold'>10,000+ Khóa học online khác nhau</p> */}
-                <h1 className='text-3xl text-center font-semibold'>Các <span className='text-blue-600'>khóa học</span> chính</h1>
-                {/* </div> */}
-                {/* <div className='flex justify-end items-end col-span-2'>
-                        <div className='flex gap-2 flex-wrap items-end'>
-                            {categories.map((category) => {
-                                if (category.parent === 0) {
-                                    return (
-                                        <button
-                                            key={category.id}
-                                            className='hover:text-blue-600 font-semibold text-gray-600 
-                                            cursor-pointer duration-300 bg-blue-200 px-3 rounded-md'>
-                                            {category.name}
-                                        </button>
-                                    )
-                                }
-                            })}
-
-                        </div>
-                    </div> */}
-                {/* </div> */}
-                {/* Course List */}
                 {categories.map((category) => {
-                    if (category.parent === 0) {
-                        return (
-                            <Fragment key={category.id}>
-                                <div className='flex justify-center'>
-                                    <h2 className='mt-3 font-semibold text-center px-3 py-1 bg-blue-500 text-white rounded-lg'>
-                                        Khóa học {category.name}
-                                    </h2>
-                                </div>
-                                <CourseWrapper categoryId={category.id} />
-                                <hr className='mt-4 border-gray-300' />
-                            </Fragment>
-                        )
-                    }
+                    return (
+                        <Fragment key={category.id}>
+                            <div className='flex justify-center'>
+                                <h2 className='mt-3 font-semibold text-center px-3 py-1 bg-blue-500 text-white rounded-lg'>
+                                    {category.title}
+                                </h2>
+                            </div>
+                            <CourseWrapper categoryId={category.id} />
+                            <hr className='mt-4 border-gray-300' />
+                        </Fragment>
+                    )
                 })}
             </div>
         </section>
