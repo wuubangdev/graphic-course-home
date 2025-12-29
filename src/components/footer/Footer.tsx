@@ -114,14 +114,14 @@ export default function Footer() {
                             <div className="mt-4 space-y-2">
                                 <a
                                     href={`mailto:${contactInfo?.email ?? "khoadohoavn@gmail.com"}`}
-                                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/90 hover:bg-white/10"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/90 hover:bg-white/10"
                                 >
                                     <MailOutlined />
                                     <span className="font-semibold">{contactInfo?.email ?? "khoadohoavn@gmail.com"}</span>
                                 </a>
                                 <a
                                     href={`tel:${contactInfo?.phone ?? "+84123456789"}`}
-                                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/90 hover:bg-white/10"
+                                    className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/90 hover:bg-white/10"
                                 >
                                     <PhoneOutlined />
                                     <span className="font-semibold">{contactInfo?.phone ?? "+84 123 456 789"}</span>
@@ -188,7 +188,7 @@ export default function Footer() {
                     {/* Payment + Support */}
                     <Col xs={24} md={7} className="flex">
                         <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-5">
-                            <Title level={5} style={{ marginTop: 0, color: "white" }}>
+                            <Title level={5} style={{ marginBottom: 12, color: "white" }}>
                                 Thanh toán
                             </Title>
 
@@ -232,7 +232,7 @@ export default function Footer() {
 
                             <Divider style={{ borderColor: "rgba(255,255,255,0.12)", margin: "14px 0" }} />
 
-                            <Title level={5} style={{ marginTop: 0, color: "white" }}>
+                            <Title level={5} style={{ marginBottom: 12, color: "white" }}>
                                 Hỗ trợ nhanh
                             </Title>
 
