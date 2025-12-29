@@ -188,7 +188,7 @@ export default function AuthHeaderButton() {
                     >
                         {initial}
                     </Avatar>
-                    <span className="text-white">{user.email}</span>
+                    <span className="text-white">{user.username}</span>
                 </div>
             </Dropdown>
         </>
