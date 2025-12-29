@@ -30,7 +30,7 @@ const CourseCard: React.FC<CourseCardProps> = async ({ course, isDarkMode }) => 
                 <h3 style={{ fontWeight: 600 }} className={`${isDarkMode ? 'text-white' : 'text-black'} pt-3 font-semibold line-clamp-2`}>{course?.title ?? "Bigener Adobe Illustrator for Graphic Design"}</h3>
                 {/* <span>{course?.description}</span> */}
                 {/* Cost */}
-                <div className='flex justify-between flex-1 items-end'>
+                <div className='flex justify-between flex-1 items-end'>45998
                     <div className='flex gap-2 items-end'>
                         <span className={`${isDarkMode ? 'text-[#e89191]' : 'text-[#f34848]'} font-semibold`}>{formatPriceVND(course?.priceSale || "0đ")}</span>
                         {/* <span
