@@ -1,4 +1,3 @@
-import CourseCard from "@/components/courses/course-card/CourseCard";
 import { fetchAllLearnPressCourses, LpCourse } from "@/lib/learnpress";
 
 type SP = Record<string, string | string[] | undefined>;
@@ -17,17 +16,18 @@ export default async function Page({
         search: search || "",
     });
     const courses = data;
+    console.log("courses", courses);
 
     return <section className='pt-8 pb-24 relative'>
         <div className='container px-4 mx-auto z-20'>
             <div className='w-full'>
-                {courses.length === 0 ? <p>Đang tải...</p> :
+                {/* {courses.length === 0 ? <p>Đang tải...</p> :
                     <div className='mt-4 grid grid-cols-4 gap-8'>
                         {courses.map(course => (
                             <CourseCard key={course.id} course={course} />
                         ))}
                     </div>
-                }
+                } */}
             </div>
         </div>
     </section>;

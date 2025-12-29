@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "standalone",
   experimental: {
-    staleTimes: { dynamic: 0, static: 0 }, // <- XÓA dòng này là cache lại
+    staleTimes: { dynamic: 0, static: 0 },
   },
   images: {
     remotePatterns: [
