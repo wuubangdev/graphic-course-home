@@ -32,7 +32,7 @@ const Navigation = () => {
             }}
         >
             <div
-                className='mx-auto w-[80%]'
+                className='mx-auto max-w-[1280px]'
             >
                 <div className='grid grid-cols-4 px-4 gap-4'>
                     <div className='flex'>
