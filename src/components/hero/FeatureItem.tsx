@@ -18,7 +18,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ feature, offset = 0 }) => {
         <button
             type="button"
             onClick={() => scrollTo(feature.selector)}
-            className="flex flex-col items-center text-center cursor-pointer group w-24 aspect-square"
+            className="flex flex-col items-center text-center cursor-pointer group w-26 aspect-square"
         >
             {/* Icon area: cố định chiều cao để không nhảy */}
             <span className="h-16 w-16 flex items-center justify-center">

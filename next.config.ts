@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "standalone",
   experimental: {
-    staleTimes: { dynamic: 0, static: 0 },
+    // staleTimes: { dynamic: 0, static: 0 },
   },
   images: {
     remotePatterns: [

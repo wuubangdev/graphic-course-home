@@ -34,7 +34,7 @@ export type Category = {
     description: string;
     selector: string;
     elementShow: number;
-    setBg?: string | null;
+    setBg?: StrapiV5File | null;
     rank: number;
     createdAt: string;
     updatedAt: string;
@@ -46,6 +46,7 @@ export async function fetchCategories() {
     return strapiFetch<StrapiV5Collection<Category>>(`/api/categories`, {
         query: {
             populate: {
+                setBg: true,
                 courses: {
                     populate: {
                         // subMedia: true,

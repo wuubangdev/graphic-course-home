@@ -8,9 +8,10 @@ import React from 'react'
 
 interface CourseCardProps {
     course: Course;
+    isDarkMode?: boolean;
 }
 
-const CourseCard: React.FC<CourseCardProps> = async ({ course }) => {
+const CourseCard: React.FC<CourseCardProps> = async ({ course, isDarkMode }) => {
     return (
         <Link href={`khoa-hoc/${toSlug(course?.title || "123")}-${course.id}.html`}
             className='flex flex-col relative cursor-pointer hover:-translate-y-1 duration-300 rounded-lg'
@@ -26,12 +27,15 @@ const CourseCard: React.FC<CourseCardProps> = async ({ course }) => {
             </div>
             <div className='flex flex-col pb-6 flex-1'>
                 {/* Title */}
-                <h3 style={{ fontWeight: 600 }} className='pt-3 font-semibold line-clamp-2'>{course?.title ?? "Bigener Adobe Illustrator for Graphic Design"}</h3>
+                <h3 style={{ fontWeight: 600 }} className={`${isDarkMode ? 'text-white' : 'text-black'} pt-3 font-semibold line-clamp-2`}>{course?.title ?? "Bigener Adobe Illustrator for Graphic Design"}</h3>
                 {/* <span>{course?.description}</span> */}
                 {/* Cost */}
                 <div className='flex justify-between flex-1 items-end'>
                     <div className='flex gap-2 items-end'>
-                        <span className='text-[#f34848] font-semibold'>{formatPriceVND(course?.priceSale || "0đ")}</span>
+                        <span className={`${isDarkMode ? 'text-[#e89191]' : 'text-[#f34848]'} font-semibold`}>{formatPriceVND(course?.priceSale || "0đ")}</span>
+                        {/* <span
+                            className={`${isDarkMode ? 'text-white' : 'text-black'} text-[#f34848] font-semibold`}
+                        >{formatPriceVND(course?.priceSale || "0đ")}</span> */}
                         <span className='text-gray-400 line-through'>{formatPriceVND(course?.priceOrigin || "0đ")}</span>
                         {course?.salePercent &&
                             <span className='p-1 rounded-md text-[0.8rem] text-white bg-red-500'>-{course?.salePercent}%</span>}

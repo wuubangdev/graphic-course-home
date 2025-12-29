@@ -175,18 +175,21 @@ export default function AuthHeaderButton() {
                     </div>
                 )}
             >
-                <Avatar
-                    size={34}
-                    className="cursor-pointer border-white"
-                    style={{
-                        background: "#1e64e9",
-                        color: "#fff",
-                        fontWeight: 700,
-                        border: "1px solid #fff",
-                    }}
-                >
-                    {initial}
-                </Avatar>
+                <div className="flex gap-2 items-center cursor-pointer">
+                    <Avatar
+                        size={34}
+                        className="border-white relative"
+                        style={{
+                            background: "#1e64e9",
+                            color: "#fff",
+                            fontWeight: 700,
+                            border: "1px solid #fff",
+                        }}
+                    >
+                        {initial}
+                    </Avatar>
+                    <span className="text-white">{user.email}</span>
+                </div>
             </Dropdown>
         </>
     );

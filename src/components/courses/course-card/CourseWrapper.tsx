@@ -3,15 +3,16 @@ import CourseCard from './CourseCard';
 import { Course } from '@/lib/strapi-lib/api/category';
 
 interface CourseWrapperProps {
-    courses: Course[]
+    courses: Course[];
+    isDarkMode?: boolean;
 }
 
-const CourseWrapper: React.FC<CourseWrapperProps> = async ({ courses }) => {
+const CourseWrapper: React.FC<CourseWrapperProps> = async ({ courses, isDarkMode }) => {
 
     return (
         <div className='mt-4 grid grid-cols-4 gap-8'>
             {courses.map(course => (
-                <CourseCard key={course.id} course={course} />
+                <CourseCard key={course.id} course={course} isDarkMode={isDarkMode} />
             ))}
         </div>
     )

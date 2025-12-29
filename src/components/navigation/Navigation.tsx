@@ -70,18 +70,18 @@ const Navigation = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex items-center gap-2 2xl:gap-4 justify-end'>
+                    <div className='flex items-center gap-3 2xl:gap-4 justify-end'>
                         <AuthHeaderButton />
                         {/* Right bar */}
                         <Link href="/cart" className="flex justify-center items-center relative">
-                            <div className="cursor-pointer flex items-end border-[1px] border-gray-300 rounded-md duration-300 px-4 py-1.5 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm relative">
+                            <div className="cursor-pointer flex items-center border-white border-[1px] rounded-md duration-300 px-2 py-1 2xl:py-2 2xl:px-4 gap-2 hover:bg-blue-700 hover:shadow-sm relative">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     strokeWidth="1.5"
                                     stroke="currentColor"
-                                    className="size-5 text-white"
+                                    className="size-6 text-white"
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -89,20 +89,19 @@ const Navigation = () => {
                                         d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                                     />
                                 </svg>
-
-                                <span className="text-white duration-300">Giỏ hàng</span>
-
                                 {/* badge */}
-                                <div
-                                    className={[
-                                        "absolute rounded-full aspect-square px-2 flex justify-center items-center",
-                                        "bg-white text-sm -top-2 -right-2 duration-300",
-                                        totalQty > 0 ? "text-blue-700" : "text-gray-400",
-                                    ].join(" ")}
-                                    aria-label={`Cart items: ${totalQty}`}
-                                >
-                                    {totalQty > 99 ? "99+" : totalQty}
-                                </div>
+                                {totalQty > 0 &&
+                                    <div
+                                        className={[
+                                            "absolute rounded-full aspect-square px-2 flex justify-center items-center",
+                                            "bg-white/80 text-sm -top-1 -right-1 duration-300",
+                                            totalQty > 0 ? "text-blue-700" : "text-gray-400",
+                                        ].join(" ")}
+                                        aria-label={`Cart items: ${totalQty}`}
+                                    >
+                                        {totalQty > 99 ? "99+" : totalQty}
+                                    </div>
+                                }
                             </div>
                         </Link>
                     </div>
