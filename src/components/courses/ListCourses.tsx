@@ -1,7 +1,7 @@
 import React from 'react'
 import { Category, fetchCategories } from '@/lib/strapi-lib/api/category';
 import { strapiMediaUrl } from '@/lib/strapi-lib/strapi';
-import CourseSection from './CourseSection';
+import CourseSection from './CourseSection2';
 
 const ListCourses = async () => {
     const res = await fetchCategories();
@@ -15,6 +15,7 @@ const ListCourses = async () => {
                     if (bgImg) {
                         return (
                             <CourseSection
+                                key={category.documentId}
                                 theme="dark"
                                 title="Add-ons/Plug-ins"
                                 subtitle="Danh sách các add-ons/plug-ins"
@@ -65,6 +66,7 @@ const ListCourses = async () => {
                         //     </div>
                         // </div>
                         <CourseSection
+                            key={category.documentId}
                             theme="light"
                             title="Add-ons/Plug-ins"
                             subtitle="Danh sách các add-ons/plug-ins"
