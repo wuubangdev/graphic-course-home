@@ -28,32 +28,6 @@ function calcSalePercent(origin?: number | null, sale?: number | null) {
     return Math.max(0, Math.min(100, p));
 }
 
-// function Badge({
-//     children,
-//     tone = "red",
-// }: {
-//     children: React.ReactNode;
-//     tone?: "red" | "blue" | "gray";
-// }) {
-//     const cls =
-//         tone === "red"
-//             ? "bg-red-500/95 text-white"
-//             : tone === "blue"
-//                 ? "bg-blue-500/95 text-white"
-//                 : "bg-white/10 text-white";
-//     return (
-//         <span
-//             className={[
-//                 "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold",
-//                 "backdrop-blur",
-//                 cls,
-//             ].join(" ")}
-//         >
-//             {children}
-//         </span>
-//     );
-// }
-
 function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "dark", index: number }) {
     const isDark = theme === "dark";
     const href = item.documentId ?? `/khoa-hoc/${item.id}`;
@@ -83,7 +57,6 @@ function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "da
                     className="object-cover transition duration-300 group-hover:scale-105"
                 />
 
-                {/* premium overlay + shine */}
                 <div
                     className={[
                         "absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100",
@@ -94,14 +67,6 @@ function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "da
                 />
 
                 <div className="pointer-events-none absolute -left-24 top-0 h-full w-28 rotate-12 bg-white/15 blur-xl opacity-0 transition duration-300 group-hover:opacity-100" />
-
-                {/* top badges */}
-                {/* <div className="absolute left-3 top-3 flex items-center gap-2">
-                    {item.tag && <Badge tone="gray">{item.tag}</Badge>}
-                    {percent !== null && (
-                        <Badge tone="red">-{percent}%</Badge>
-                    )}
-                </div> */}
             </div>
 
             {/* content */}
@@ -191,7 +156,7 @@ export default function CourseSection({
                 </>
             )}
 
-            <div className={`relative mx-auto max-w-6xl px-4 ${isDark ? "py-14" : "py-10"}`}>
+            <div className={`relative mx-auto max-w-[1280px] px-4 ${isDark ? "py-14" : "py-10"}`}>
                 {/* header (gọn + sang) */}
                 <div className="mb-6 flex items-start justify-between gap-4">
                     <div>

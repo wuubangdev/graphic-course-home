@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import AuthHeaderButton from '../util/AuthHeaderButton'
 import { useCart } from '../card/CartProvider'
+import TopUtilityBar from './TopUtilityBar'
+import { Divider } from 'antd'
 
 const Navigation = () => {
     const router = useRouter();
@@ -25,7 +27,7 @@ const Navigation = () => {
     }
     return (
         <section
-            className='w-full px-4 bg-blue-500 z-50'
+            className='w-full bg-blue-500 z-50'
 
             style={{
                 boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
@@ -34,8 +36,9 @@ const Navigation = () => {
             }}
 
         >
+            <TopUtilityBar />
             <div
-                className='mx-auto max-w-[1280px]'
+                className='mx-auto max-w-[1280px] px-4'
             >
                 <div className='grid grid-cols-4 px-4 gap-4'>
                     <div className='flex'>
