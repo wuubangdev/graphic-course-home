@@ -107,7 +107,7 @@ function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "da
             {/* content */}
             <div className="p-4">
                 <div className="flex items-center justify-between gap-2">
-                    <div className={`text-xs font-semibold ${sub}`}>#{index}</div>
+                    <div className={`text-xs font-semibold ${sub}`}>#{index + 1}</div>
                     <span
                         className={[
                             "rounded-full px-2 py-1 text-[11px] font-semibold",
@@ -118,7 +118,7 @@ function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "da
                     </span>
                 </div>
 
-                <h3 className={`mt-2 line-clamp-2 text-[15px] font-semibold ${title}`}>
+                <h3 className={`mt-2 line-clamp-2 text-[16px] font-semibold ${title}`}>
                     {item.title}
                 </h3>
 
@@ -193,7 +193,7 @@ export default function CourseSection({
 
             <div className={`relative mx-auto max-w-6xl px-4 ${isDark ? "py-14" : "py-10"}`}>
                 {/* header (gọn + sang) */}
-                <div className="mb-6 flex items-end justify-between gap-4">
+                <div className="mb-6 flex items-start justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-3">
                             <span
@@ -203,11 +203,11 @@ export default function CourseSection({
                                 ].join(" ")}
                             />
                             <div>
-                                <h2 className={`text-2xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>
+                                <h2 style={{ marginBottom: 8 }} className={`text-2xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}>
                                     {title}
                                 </h2>
                                 {subtitle && (
-                                    <p className={`mt-1 text-sm ${isDark ? "text-white/75" : "text-slate-600"}`}>
+                                    <p className={`${isDark ? "text-white/75" : "text-slate-600"}`}>
                                         {subtitle}
                                     </p>
                                 )}

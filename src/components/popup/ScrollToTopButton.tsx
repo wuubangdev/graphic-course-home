@@ -30,7 +30,7 @@ export default function ScrollToTopButton() {
             title="Lên đầu trang"
         >
             {/* icon mũi tên lên */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 text-white">
                 <path
                     fillRule="evenodd"
                     d="M11.47 3.22a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06l-6.22-6.22V20.25a.75.75 0 0 1-1.5 0V5.56l-6.22 6.22a.75.75 0 1 1-1.06-1.06l7.5-7.5Z"

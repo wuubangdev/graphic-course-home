@@ -29,7 +29,10 @@ const Navigation = () => {
 
             style={{
                 boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                background:
+                    "linear-gradient(180deg, rgba(26,94,255,1) 0%, rgba(20, 53, 162, 1) 55%, rgba(8, 40, 127, 1) 100%)",
             }}
+
         >
             <div
                 className='mx-auto max-w-[1280px]'

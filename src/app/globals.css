@@ -51,7 +51,7 @@ html {
 
   /* 1440p ultrawide / 4K scaled */
   html {
-    font-size: 28px;
+    font-size: 22px;
   }
 }
 
@@ -59,7 +59,7 @@ html {
 
   /* 4K native width */
   html {
-    font-size: 42px;
+    font-size: 24px;
   }
 }
 
