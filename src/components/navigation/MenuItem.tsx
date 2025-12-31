@@ -11,7 +11,7 @@ interface MenuItemProps {
 const MenuItem: React.FC<MenuItemProps> = ({ icon, title, href }) => {
     return (
         <Link href={href} className='h-full flex items-center gap-2 py-2 cursor-pointer group'>
-            <div className='h-8 w-8 relative'>
+            <div className='h-9 w-9 relative'>
                 <Image
                     alt={title}
                     src={icon}

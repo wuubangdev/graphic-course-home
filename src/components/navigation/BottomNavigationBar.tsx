@@ -6,11 +6,10 @@ import { strapiMediaUrl } from '@/lib/strapi-lib/strapi';
 const BottomNavigationBar = async () => {
     const res = await fetchNavigationBottom();
     const items = res.data.items;
-    const length = items.length;
     return (
         <div className='bg-white'>
-            <div className='mx-auto w-full max-w-[1280px] flex justify-between px-4 md:px-0'>
-                <div className={`w-full grid grid-cols-${length} gap-4`}>
+            <div className='mx-auto w-full max-w-[1280px] flex justify-between px-4'>
+                <div className={`w-full grid grid-cols-6 gap-4`}>
                     {items.map((item, i) =>
                         <MenuItem
                             key={`bottom-nav-item-${i}`}

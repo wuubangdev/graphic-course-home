@@ -219,3 +219,15 @@ html {
   height: auto !important;
   display: block;
 }
+
+
+.myCarousel .slick-list {
+  overflow: hidden !important;
+  margin: 0 -8px;
+  /* bù 2 mép */
+}
+
+.myCarousel .slick-slide>div {
+  padding: 0 8px;
+  /* khe giữa slide = 16px */
+}

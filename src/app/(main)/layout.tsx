@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <main>
+    <main className="bg-[#ccc]/30">
       <CartProvider>
         <Navigation />
         {children}
