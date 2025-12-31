@@ -1,49 +1,73 @@
-// TopUtilityBar.tsx
+import { fetchNavigationTop } from "@/lib/strapi-lib/api/navigationTop";
+import { strapiMediaUrl } from "@/lib/strapi-lib/strapi";
+import Image from "next/image";
 import Link from "next/link";
-import {
-    LeftOutlined,
-    BookOutlined,
-    GiftOutlined,
-    PhoneOutlined,
-} from "@ant-design/icons";
 
-type TopUtilityBarProps = {
-    leftText?: string;
-    leftHref?: string;
-    items?: { label: string; href: string; icon: React.ReactNode }[];
-};
+function isExternal(url?: string) {
+    return !!url && /^https?:\/\//i.test(url);
+}
 
-export default function TopUtilityBar({
-    leftText = "Kiếm tiền cùng KHOAHOCDOHOA",
-    leftHref = "/kiem-tien",
-    items = [
-        { label: "Hướng dẫn mua hàng", href: "/huong-dan-mua-hang", icon: <BookOutlined /> },
-        { label: "Ưu đãi khách hàng", href: "/uu-dai", icon: <GiftOutlined /> },
-        { label: "Thông tin liên hệ", href: "/lien-he", icon: <PhoneOutlined /> },
-    ],
-}: TopUtilityBarProps) {
+export default async function TopUtilityBar() {
+    const res = await fetchNavigationTop();
+    const { main, customerIncentives, contactInfo } = res.data;
+
+    const itemsRight = [
+        {
+            title: customerIncentives?.title,
+            link: customerIncentives?.link,
+            icon: strapiMediaUrl(customerIncentives?.icon?.url) || "/test.png",
+        },
+        {
+            title: contactInfo?.title,
+            link: contactInfo?.link,
+            icon: strapiMediaUrl(contactInfo?.icon?.url) || "/test.png",
+        },
+    ].filter((x) => x.title && x.link);
+
+    const mainIcon = strapiMediaUrl(main?.icon?.url) || "/test.png";
+
     return (
         <div className="w-full bg-black/10 text-white">
-            <div className="mx-auto flex py-2 max-w-[1280px] items-center justify-between px-8">
+            <div className="mx-auto flex max-w-[1280px] items-center justify-between px-2 py-3">
                 {/* Left */}
                 <Link
-                    href={leftHref}
-                    className="flex items-center gap-2 text-sm font-medium opacity-95 hover:opacity-100"
+                    href={main?.link || "#"}
+                    target={isExternal(main?.link) ? "_blank" : undefined}
+                    rel={isExternal(main?.link) ? "noopener noreferrer" : undefined}
+                    className="flex items-center gap-2 text-sm font-medium opacity-70 hover:opacity-100 duration-300"
                 >
-                    <LeftOutlined style={{ fontSize: 14 }} />
-                    <span className="line-clamp-1">{leftText}</span>
+                    <span className="relative h-[1.1rem] w-[1.1rem] shrink-0">
+                        <Image
+                            alt={main?.title || "icon"}
+                            src={mainIcon}
+                            fill
+                            sizes="20px"
+                            className="object-contain"
+                        />
+                    </span>
+                    <span className="line-clamp-1">{main?.title}</span>
                 </Link>
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
-                    {items.map((it) => (
+                    {itemsRight.map((it) => (
                         <Link
-                            key={it.href}
-                            href={it.href}
-                            className="flex items-center gap-2 text-sm opacity-95 hover:opacity-100"
+                            key={it.title}
+                            href={it.link!}
+                            target={isExternal(it.link) ? "_blank" : undefined}
+                            rel={isExternal(it.link) ? "noopener noreferrer" : undefined}
+                            className="flex items-center gap-2 text-sm opacity-70 hover:opacity-100 duration-300"
                         >
-                            <span className="text-[14px] leading-none">{it.icon}</span>
-                            <span className="hidden sm:inline">{it.label}</span>
+                            <span className="relative h-[1.1rem] w-[1.1rem] shrink-0">
+                                <Image
+                                    alt={it.title!}
+                                    src={it.icon}
+                                    fill
+                                    sizes="20px"
+                                    className="object-contain"
+                                />
+                            </span>
+                            <span className="line-clamp-1">{it.title}</span>
                         </Link>
                     ))}
                 </div>

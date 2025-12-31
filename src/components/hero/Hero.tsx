@@ -5,7 +5,6 @@ import type { Hero } from '@/lib/strapi-lib/api/hero';
 import CustomCarousel from '../carousel/CustomCarousel';
 import { fileUrl } from '@/lib/strapi-lib/strapi-media';
 import { strapiMediaUrl } from '@/lib/strapi-lib/strapi';
-import Feature from './Feature';
 
 const Hero = async () => {
     const res = await fetchHero();
@@ -52,7 +51,6 @@ const Hero = async () => {
                         })}
                     </div>
                 </div>
-                <Feature />
             </div>
         </section>
     )
