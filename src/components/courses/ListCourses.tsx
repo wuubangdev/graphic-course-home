@@ -22,6 +22,7 @@ const ListCourses = async () => {
                                 viewMoreHref="/khoa-hoc"
                                 items={courses}
                                 backgroundImage={bgImg}
+                                selector={category.selector}
                             />
                         )
                     }
@@ -33,6 +34,7 @@ const ListCourses = async () => {
                             subtitle={category.description}
                             viewMoreHref="/khoa-hoc"
                             items={courses}
+                            selector={category.selector}
                         />
                     )
                 })}

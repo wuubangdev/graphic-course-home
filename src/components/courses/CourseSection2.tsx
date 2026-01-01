@@ -122,6 +122,7 @@ export default function CourseSection({
     viewMoreHref,
     backgroundImage,
     items,
+    selector
 }: {
     theme?: "light" | "dark";
     title: string;
@@ -129,11 +130,12 @@ export default function CourseSection({
     viewMoreHref?: string;
     backgroundImage?: string;
     items: Course[];
+    selector: string;
 }) {
     const isDark = theme === "dark";
 
     return (
-        <section className={isDark ? "relative overflow-hidden" : ""}>
+        <section id={selector} className={isDark ? "relative overflow-hidden" : ""}>
             {/* dark bg */}
             {isDark && (
                 <>

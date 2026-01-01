@@ -77,6 +77,55 @@ html {
   /* chỉnh -3px/-6px */
 }
 
+/* luôn cố định: không đổi theo active/current */
+.myCarousel .slick-slide>div {
+  padding: 0 8px 12px;
+  /* gap giữa slide = 16px */
+}
+
+/* bù mép ngoài để không hở trái/phải */
+.myCarousel .slick-list {
+  margin: 0 -8px;
+  /* triệt hở 2 bên */
+  overflow: hidden !important;
+}
+
+/* tránh slick thêm padding/margin lạ */
+.myCarousel .slick-track {
+  margin-left: 0 !important;
+}
+
+.myCarousel .slick-slide {
+  padding: 0 !important;
+}
+
+.myCarousel .slick-dots {
+  position: static !important;
+  margin-top: 12px;
+}
+
+/* nền dot (thanh xám/nhạt) */
+.myCarousel .slick-dots li button {
+  width: 28px !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+  background: rgba(22, 119, 255, .25) !important;
+  opacity: 1 !important;
+}
+
+/* màu thanh chạy (progress) - nằm ở li.slick-active::after */
+.myCarousel .slick-dots li.slick-active::after {
+  background: #1677ff !important;
+}
+
+/* optional: tắt focus xanh */
+.myCarousel .slick-dots li button:focus,
+.myCarousel .slick-dots li button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
 
 /* =========================
    WP / Rich Content Styling
@@ -218,16 +267,4 @@ html {
   max-width: 100%;
   height: auto !important;
   display: block;
-}
-
-
-.myCarousel .slick-list {
-  overflow: hidden !important;
-  margin: 0 -8px;
-  /* bù 2 mép */
-}
-
-.myCarousel .slick-slide>div {
-  padding: 0 8px;
-  /* khe giữa slide = 16px */
 }

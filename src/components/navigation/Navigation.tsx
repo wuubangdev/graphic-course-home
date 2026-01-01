@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import AuthHeaderButton from '../util/AuthHeaderButton'
+import AuthHeaderButton from './AuthHeaderButton'
 import TopUtilityBar from './TopUtilityBar'
 import Cart from './Cart'
 import Search from './Search'
