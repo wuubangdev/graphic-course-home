@@ -1,9 +1,32 @@
-import { fetchCourses } from "@/lib/strapi-lib/api/course";
+import { fetchCourses, type Course, type CoursePriceFilter, type CourseSort } from "@/lib/strapi-lib/api/course";
 import { fetchCategories } from "@/lib/strapi-lib/api/category";
 import CourseFilters from "@/components/course-page/CourseFilters";
 import CourseGrid from "@/components/course-page/CourseGrid";
 
 type SearchParams = Record<string, string | string[] | undefined>;
+
+function sp1(sp: SearchParams, key: string): string {
+    const v = sp[key];
+    if (!v) return "";
+    return Array.isArray(v) ? (v[0] ?? "") : v;
+}
+
+function toPositiveInt(v: string, fallback: number) {
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
+}
+
+function parseEnum<T extends readonly string[]>(
+    allowed: T,
+    v: string,
+    fallback: T[number]
+): T[number] {
+    return (allowed as readonly string[]).includes(v) ? (v as T[number]) : fallback;
+}
+
+// Chỉ cần đảm bảo mảng này khớp đúng union type trong course.ts
+const SORTS = ["new", "updated", "price_asc", "price_desc"] as const satisfies readonly CourseSort[];
+const PRICES = ["all", "free", "paid"] as const satisfies readonly ("all" | CoursePriceFilter)[];
 
 export default async function CoursesPage({
     searchParams,
@@ -12,34 +35,34 @@ export default async function CoursesPage({
 }) {
     const sp = await searchParams;
 
-    const sp1 = (key: string) => {
-        const v = sp[key];
-        if (!v) return "";
-        return Array.isArray(v) ? (v[0] ?? "") : v;
-    };
+    const q = sp1(sp, "q");
+    const category = sp1(sp, "category") || "all";
+    const level = sp1(sp, "level") || "all";
 
-    const q = sp1("q");
-    const category = sp1("category") || "all";
-    const level = sp1("level") || "all";
-    const price = sp1("price") || "all";
-    const sort = sp1("sort") || "new";
-    const page = Number(sp1("page") || 1);
+    const priceUI = sp1(sp, "price") || "all";
+    const priceParsed = parseEnum(PRICES, priceUI, "all");
+
+    const sortUI = sp1(sp, "sort") || "new";
+    const sort = parseEnum(SORTS, sortUI, "new");
+
+    const page = toPositiveInt(sp1(sp, "page"), 1);
 
     const [courseRes, catRes] = await Promise.all([
         fetchCourses({
             q: q || undefined,
             categoryDocumentId: category !== "all" ? category : undefined,
-            level: level !== "all" ? level : undefined,
-            price: price !== "all" ? (price as any) : undefined,
-            sort: sort as any,
+            level: level !== "all" ? level : undefined, // opts.level là string nên OK
+            price: priceParsed === "all" ? undefined : priceParsed, // CoursePriceFilter | undefined
+            sort, // CourseSort
             page,
             pageSize: 12,
         }),
         fetchCategories(),
     ]);
 
-    const courses = courseRes.data ?? [];
-    const pagination = (courseRes as any).meta?.pagination; // nếu meta type bạn chưa fix
+    const courses: Course[] = courseRes.data ?? [];
+    const pagination = courseRes.meta.pagination;
+
     const categories = catRes.data ?? [];
 
     return (
@@ -50,8 +73,17 @@ export default async function CoursesPage({
 
                     <div className="mt-4">
                         <CourseFilters
-                            initial={{ q, category, level, price, sort }}
-                            categories={categories.map((c) => ({ documentId: c.documentId, title: c.title }))}
+                            initial={{
+                                q,
+                                category,
+                                level,
+                                price: priceParsed, // "all" | "free" | "paid"
+                                sort,
+                            }}
+                            categories={categories.map((c) => ({
+                                documentId: c.documentId,
+                                title: c.title,
+                            }))}
                         />
                     </div>
                 </div>

@@ -38,6 +38,7 @@ export type Course = {
 
 export type CourseSort = "new" | "updated" | "price_asc" | "price_desc";
 export type CoursePriceFilter = "free" | "paid";
+
 export type FetchCoursesOpts = {
     page?: number;
     pageSize?: number;
@@ -59,6 +60,7 @@ export type FetchCoursesOpts = {
 /** =========================
  * Helpers
  * ========================= */
+
 export function fileUrl(f: StrapiV5File, size?: "large" | "medium" | "small" | "thumbnail") {
     const picked = size ? f.formats?.[size]?.url : undefined;
     return strapiMediaUrl(picked || f.url);
@@ -71,18 +73,39 @@ export function fileAlt(f: StrapiV5File) {
 function buildSort(sort?: CourseSort) {
     switch (sort) {
         case "price_asc":
-            // ưu tiên giá sale; fallback giá gốc
-            return ["priceSale:asc", "priceOrigin:asc", "updatedAt:desc"];
+            return ["priceSale:asc", "priceOrigin:asc", "updatedAt:desc"] as const;
         case "price_desc":
-            return ["priceSale:desc", "priceOrigin:desc", "updatedAt:desc"];
+            return ["priceSale:desc", "priceOrigin:desc", "updatedAt:desc"] as const;
         case "updated":
-            return ["updatedAt:desc"];
+            return ["updatedAt:desc"] as const;
         case "new":
         default:
-            // publishedAt có thể null -> fallback createdAt
-            return ["publishedAt:desc", "createdAt:desc"];
+            return ["publishedAt:desc", "createdAt:desc"] as const;
     }
 }
+
+/**
+ * Minimal type-safe Strapi filter builder (NO any)
+ * Covers what you are using: $or, $and, $containsi, $eq, $gt, nested objects.
+ */
+type StrapiScalar = string | number | boolean | null;
+type StrapiOp =
+    | { $eq: StrapiScalar }
+    | { $gt: number }
+    | { $containsi: string };
+
+type StrapiFilter =
+    | StrapiOp
+    | { $or: StrapiFilter[] }
+    | { $and: StrapiFilter[] }
+    | { [field: string]: StrapiFilter };
+
+type StrapiFilters = {
+    $or?: StrapiFilter[];
+    $and?: StrapiFilter[];
+    level?: StrapiFilter;
+    categories?: StrapiFilter;
+};
 
 /** =========================
  * API
@@ -106,12 +129,14 @@ export async function fetchCourses(opts: FetchCoursesOpts = {}) {
     } = opts;
 
     const keyword = (q ?? search)?.trim();
-
-    const filters: any = {};
+    const filters: StrapiFilters = {};
 
     // search: title OR description
     if (keyword) {
-        filters.$or = [{ title: { $containsi: keyword } }, { description: { $containsi: keyword } }];
+        filters.$or = [
+            { title: { $containsi: keyword } },
+            { description: { $containsi: keyword } },
+        ];
     }
 
     // level
@@ -121,20 +146,15 @@ export async function fetchCourses(opts: FetchCoursesOpts = {}) {
 
     // price
     if (price === "free") {
-        // free nếu priceSale==0 OR priceOrigin==0 (tuỳ data bạn)
-        filters.$and = [
-            ...(filters.$and ?? []),
-            {
-                $or: [{ priceSale: { $eq: 0 } }, { priceOrigin: { $eq: 0 } }],
-            },
-        ];
+        const andArr = (filters.$and ??= []);
+        andArr.push({
+            $or: [{ priceSale: { $eq: 0 } }, { priceOrigin: { $eq: 0 } }],
+        });
     } else if (price === "paid") {
-        filters.$and = [
-            ...(filters.$and ?? []),
-            {
-                $and: [{ priceSale: { $gt: 0 } }, { priceOrigin: { $gt: 0 } }],
-            },
-        ];
+        const andArr = (filters.$and ??= []);
+        andArr.push({
+            $and: [{ priceSale: { $gt: 0 } }, { priceOrigin: { $gt: 0 } }],
+        });
     }
 
     // category
@@ -143,6 +163,8 @@ export async function fetchCourses(opts: FetchCoursesOpts = {}) {
     } else if (categorySlug) {
         filters.categories = { slug: { $eq: categorySlug } };
     }
+
+    const hasFilters = Object.keys(filters).length > 0;
 
     return strapiFetch<StrapiV5Collection<Course>>(`/api/courses`, {
         query: {
@@ -170,7 +192,7 @@ export async function fetchCourses(opts: FetchCoursesOpts = {}) {
                 "updatedAt",
                 "publishedAt",
             ],
-            filters: Object.keys(filters).length ? filters : undefined,
+            filters: hasFilters ? filters : undefined,
             pagination: { page, pageSize },
             sort: buildSort(sort),
         },
@@ -196,10 +218,6 @@ export async function fetchCourseByDocumentId(documentId: string) {
     });
 }
 
-/**
- * Nếu bạn có field slug trong collection course thì bật cái này.
- * Không có slug => xóa function.
- */
 export async function fetchCourseBySlug(slug: string) {
     return strapiFetch<StrapiV5Collection<Course>>(`/api/courses`, {
         query: {
