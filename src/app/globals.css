@@ -125,6 +125,28 @@ html {
   box-shadow: none !important;
 }
 
+/* ================================================================ */
+/* luôn cố định: không đổi theo active/current */
+.myCarouselOrg .slick-slide>div {
+  padding: 0 4px;
+  /* gap giữa slide = 16px */
+}
+
+/* bù mép ngoài để không hở trái/phải */
+.myCarouselOrg .slick-list {
+  margin: 0 -4px;
+  /* triệt hở 2 bên */
+  overflow: hidden !important;
+}
+
+/* tránh slick thêm padding/margin lạ */
+.myCarouselOrg .slick-track {
+  margin-left: 0 !important;
+}
+
+.myCarouselOrg .slick-slide {
+  padding: 0 !important;
+}
 
 
 /* =========================
