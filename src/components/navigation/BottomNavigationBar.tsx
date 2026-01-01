@@ -9,7 +9,7 @@ const BottomNavigationBar = async () => {
     return (
         <div className='bg-white'>
             <div className='mx-auto w-full max-w-[1280px] flex justify-between px-4'>
-                <div className={`w-full grid grid-cols-6 gap-4`}>
+                <div className={`w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4`}>
                     {items.map((item, i) =>
                         <MenuItem
                             key={`bottom-nav-item-${i}`}

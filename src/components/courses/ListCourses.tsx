@@ -1,7 +1,7 @@
 import React from 'react'
 import { Category, fetchCategories } from '@/lib/strapi-lib/api/category';
 import { strapiMediaUrl } from '@/lib/strapi-lib/strapi';
-import CourseSection from './CourseSection2';
+import CourseSection from './CourseSection';
 
 const ListCourses = async () => {
     const res = await fetchCategories();

@@ -12,7 +12,7 @@ interface SubNavProps {
 const SubNav: React.FC<SubNavProps> = ({ subNav }) => {
     const scrollTo = useScrollToSelector({ offset: 0, behavior: "smooth" });
     return (
-        <div className='p-4'>
+        <div className='p-4 w-full'>
             <h3 className='text-[15px]' style={{ fontWeight: 600 }}>Thể loại sản phẩm</h3>
             <ul className='flex flex-col gap-1'>
                 {subNav && subNav.map((item, i) => {
