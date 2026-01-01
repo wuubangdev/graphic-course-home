@@ -6,6 +6,7 @@ import { StrapiV5Collection } from "../strapi-types";
 export type Course = {
     id: number;
     documentId: string;
+    slug: string;
     title: string;
     description: string;
     level: string;
@@ -24,7 +25,7 @@ export type Course = {
     thumMedia?: StrapiV5File | null;
 
     // relation
-    category?: Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">;
+    categories?: Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">;
 };
 
 export type Category = {

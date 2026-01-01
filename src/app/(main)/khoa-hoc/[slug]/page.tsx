@@ -1,111 +1,177 @@
-import ButtonBuy from '@/components/popup/ButtonBuy';
-import AddToCartButton from '@/components/util/AddToCartButton';
-import PayNowButton from '@/components/util/PayNowButton';
-import RichContent from '@/components/util/RichContent';
-import { fetchLearnPressCourse, LpCourse } from '@/lib/learnpress';
-import { extractIdFromSlug, toSlug } from '@/lib/slug';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import React from 'react'
+import { notFound } from "next/navigation";
+import { fetchCourseBySlug, fileUrl } from "@/lib/strapi-lib/api/course";
+import Link from "next/link";
+import Image from "next/image";
+import { toGalleryMedia } from "@/components/course-detail-page/courseMedia";
+import CourseGallery from "@/components/course-detail-page/CourseGallery";
+import MarkdownRender from "@/components/util/MarkdownRender";
 
+export default async function Page({ params }: { params: { slug: string } }) {
+    const res = await fetchCourseBySlug(params.slug);
+    const course = res.data?.[0];
+    if (!course) notFound();
 
-type Props = {
-    params: { slug: string };
-};
+    // hero input: ưu tiên thumMedia/thumImage trước, sau đó subMedia
+    const heroFiles = [
+        ...(course.thumMedia ? [course.thumMedia] : []),
+        ...(course.thumImage ? [course.thumImage] : []),
+        ...(course.subMedia ?? []),
+    ];
+    const heroItems = toGalleryMedia(heroFiles);
 
-const page = async ({ params }: Props) => {
-    const { slug } = await params;
-    const id = extractIdFromSlug(slug);
-    if (!id) {
-        // slug không đúng format, cho 404
-        notFound();
-    }
-
-    const course: LpCourse = await fetchLearnPressCourse({
-        baseUrl: process.env.WP_BASE_URL!,
-        id: id || 0,
-    });
+    const categories = course.categories ?? [];
 
     return (
-        <div className='w-full'>
-            <section className="relative overflow-hidden bg-[#0049d9] text-white">
-                <div className="absolute inset-0 bg-gradient-to-b from-[#0049d9] via-[#0049d9]/60 to-[#00153a]" />
-                <div className="relative max-w-[80%] mx-auto px-4 py-12">
-                    <div className="w-full space-y-4">
-                        <p className="text-xs uppercase tracking-[0.25em] text-blue-100">
-                            Trang Giới Thiệu
-                        </p>
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                            {course?.name || "NAN"}
+        <main className="bg-slate-50">
+            <div className="mx-auto max-w-[1280px] px-4 py-10">
+                {/* HERO */}
+                <CourseGallery items={heroItems} />
+
+                {/* BODY */}
+                <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+                    {/* LEFT */}
+                    <article className="rounded-2xl bg-white p-6 shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
+                        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+                            {course.title}
                         </h1>
-                        <h2 className="text-base md:text-lg text-blue-100 leading-relaxed">
-                            Khai phá toàn bộ tiềm năng sáng tạo với hệ sinh thái đào tạo 3D,
-                            VFX và Phát triển Game chuyên sâu và toàn diện nhất Việt Nam.
-                        </h2>
-                        <div className='w-full md:w-3/5 aspect-[21/9] relative mb-6'>
-                            <Image alt='carousel' src={course.image || ""} fill style={{ objectFit: 'cover' }} />
-                        </div>
-                        <div className='flex gap-2'>
-                            <div className='flex gap-1 items-center'>
-                                <span className='text-2xl font-semibold'>{course.price_rendered}</span>
+
+                        {/* categories tag */}
+                        {categories.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {categories.map((c) => (
+                                    <Link
+                                        key={c.documentId}
+                                        href={`/khoa-hoc?category=${encodeURIComponent(c.documentId)}&page=1`}
+                                        className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm text-blue-700 hover:bg-blue-100"
+                                    >
+                                        {c.title}
+                                    </Link>
+                                ))}
                             </div>
-                            <div className='flex gap-2 items-end'>
-                                <div className='text-gray-400 text-2xl line-through'>{course.origin_price_rendered}</div>
-                                {course.sale_price !== 0 &&
-                                    <span className='px-2 py-1 text-white text-sm rounded-md bg-red-700'>Sale</span>
+                        )}
+
+                        {/* short description */}
+                        {course.description && (
+                            <p className="mt-4 text-base leading-relaxed text-slate-700">
+                                {course.description}
+                            </p>
+                        )}
+
+                        {/* info boxes */}
+                        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                            <InfoBox label="Level" value={course.level || "—"} />
+                            <InfoBox label="Học viên" value={`${course.fakeStudentCount ?? 0}+`} />
+                            <InfoBox
+                                label="Giá"
+                                value={
+                                    course.priceSale > 0
+                                        ? `${formatVnd(course.priceSale)}`
+                                        : "Miễn phí"
                                 }
-                            </div>
-                        </div>
-                        <div className='py-3 border-t-[1px] border-gray-300 flex gap-2 justify-start'>
-                            <PayNowButton />
-                            <AddToCartButton
-                                item={{ id: "digital:tools-pack", title: "Bộ Plugin Retouch", price: 199000 }}
                             />
                         </div>
-                    </div>
-                    <div className="mt-4 border border-white/15 bg-white/5 backdrop-blur rounded-2xl px-4 py-4">
-                        {/* <p className="text-xs uppercase tracking-[0.25em] text-blue-100 mb-3">
-                            Các thống kê nỗi bật
-                        </p> */}
-                        <div className="flex flex-wrap items-center gap-6 text-xs md:text-sm">
-                            <div className='flex gap-1 text-white'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                                </svg>
-                                <p>Số lượng đã mua: <span className='text-white'>{course.count_students}</span></p>
+
+                        {/* CONTENT (tuỳ bạn render Strapi Blocks / Markdown) */}
+                        <section className="prose prose-slate mt-8 max-w-none">
+                            <MarkdownRender content={(course.content as string) ?? ""} />
+                        </section>
+
+                        {/* Student works giống ảnh */}
+                        <section className="mt-10">
+                            <h2 className="text-2xl font-bold text-slate-900">Sản phẩm của học viên</h2>
+                            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                <StudentWorkCard />
+                                <StudentWorkCard />
+                                <StudentWorkCard />
                             </div>
-                            <div className='flex gap-1 text-white'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
-                                </svg>
-                                <p>Mã sản phẩm:
-                                    &nbsp;
-                                    <span className='text-white'>{toSlug(course.name || "")}</span>
-                                </p>
-                            </div>
-                            <div className='flex gap-1 text-white'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
-                                </svg>
-                                <p>Thể loại:
-                                    &nbsp;
-                                    {course?.categories && course?.categories.length > 0 &&
-                                        course.categories.map((cat) => (
-                                            <span key={cat.id} className='text-white'>{cat.name}; </span>
-                                        ))
-                                    }
-                                </p>
+                        </section>
+                    </article>
+
+                    {/* RIGHT SIDEBAR */}
+                    <aside className="space-y-6">
+                        {/* categories box */}
+                        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.06)] lg:sticky lg:top-24">
+                            <div className="text-sm font-semibold text-slate-700">Danh mục</div>
+
+                            <div className="mt-3 space-y-2 text-sm">
+                                {categories.length ? (
+                                    categories.map((c) => (
+                                        <Link
+                                            key={c.documentId}
+                                            href={`/${c.selector ?? ""}#${c.selector ?? ""}`}
+                                            className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100"
+                                        >
+                                            {c.title}
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div className="text-slate-500">Chưa có danh mục</div>
+                                )}
                             </div>
                         </div>
-                    </div>
+
+                        {/* related courses (có thể fetch thật theo category) */}
+                        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
+                            <div className="text-sm font-semibold text-slate-700">Các khóa liên quan</div>
+                            <div className="mt-4 space-y-3">
+                                {/* Demo UI row - sau sẽ thay bằng map related */}
+                                <RelatedCourseRow
+                                    title="Khóa học liên quan #1"
+                                    thumb={course.thumImage ? fileUrl(course.thumImage, "thumbnail") : null}
+                                />
+                                <RelatedCourseRow
+                                    title="Khóa học liên quan #2"
+                                    thumb={course.thumImage ? fileUrl(course.thumImage, "thumbnail") : null}
+                                />
+                                <RelatedCourseRow
+                                    title="Khóa học liên quan #3"
+                                    thumb={course.thumImage ? fileUrl(course.thumImage, "thumbnail") : null}
+                                />
+                            </div>
+                        </div>
+                    </aside>
                 </div>
-            </section>
-            <main className="max-w-[80%] mx-auto px-4 py-6 space-y-16 lg:space-y-20">
-                <RichContent html={course?.content || ""} />
-            </main>
-            <ButtonBuy />
-        </div>
-    )
+            </div>
+        </main>
+    );
 }
 
-export default page
+function InfoBox({ label, value }: { label: string; value: string }) {
+    return (
+        <div className="rounded-xl bg-slate-100 px-4 py-3">
+            <div className="text-xs font-semibold uppercase text-slate-500">{label}</div>
+            <div className="mt-1 text-sm font-bold text-slate-900">{value}</div>
+        </div>
+    );
+}
+
+function StudentWorkCard() {
+    return (
+        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.10)]">
+            <div className="aspect-video bg-slate-200" />
+            <div className="p-4">
+                <div className="font-semibold text-slate-900">Student Work</div>
+                <div className="mt-1 text-sm text-slate-600">Tên học viên</div>
+            </div>
+        </div>
+    );
+}
+
+function RelatedCourseRow({ title, thumb }: { title: string; thumb: string | null }) {
+    return (
+        <div className="flex gap-3 rounded-xl border border-black/10 p-3 hover:bg-slate-50">
+            <div className="relative h-12 w-12 flex-none overflow-hidden rounded-lg bg-slate-200">
+                {thumb ? <Image src={thumb} alt={title} fill className="object-cover" sizes="48px" /> : null}
+            </div>
+            <div className="min-w-0">
+                <div className="truncate text-sm font-semibold text-slate-900">{title}</div>
+                <div className="mt-1 text-xs text-slate-600">Blender / 3D</div>
+            </div>
+        </div>
+    );
+}
+
+function formatVnd(n: number) {
+    if (!n || n <= 0) return "0đ";
+    return new Intl.NumberFormat("vi-VN").format(n) + "đ";
+}

@@ -25,9 +25,9 @@ function calcSalePercent(origin?: number | null, sale?: number | null) {
     return Math.max(0, Math.min(100, p));
 }
 
-function CourseCard({ item, theme, index }: { item: Course; theme: "light" | "dark", index: number }) {
+function CourseCard({ item, theme }: { item: Course; theme: "light" | "dark" }) {
     const isDark = theme === "dark";
-    const href = item.documentId ?? `/khoa-hoc/${item.id}`;
+    const href = `/khoa-hoc/${item.slug}`;
 
     const ring = isDark ? "ring-white/12" : "ring-slate-200";
     const base =
@@ -188,8 +188,8 @@ export default function CourseSection({
 
                 {/* grid */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {items.map((it, i) => (
-                        <CourseCard key={it.id} item={it} theme={theme} index={i} />
+                    {items.map((it) => (
+                        <CourseCard key={it.id} item={it} theme={theme} />
                     ))}
                 </div>
             </div>

@@ -1,0 +1,47 @@
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
+type Props = {
+  content?: string | null;
+};
+
+export default function MarkdownRender({ content }: Props) {
+  if (!content) return null;
+
+  return (
+    <article className="prose prose-slate max-w-none">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          h2: ({ node, ...props }) => (
+            <h2 className="mt-8 scroll-mt-24 text-2xl font-bold" {...props} />
+          ),
+          h3: ({ node, ...props }) => (
+            <h3 className="mt-6 scroll-mt-24 text-xl font-semibold" {...props} />
+          ),
+          p: ({ node, ...props }) => <p className="leading-relaxed" {...props} />,
+          blockquote: ({ node, ...props }) => (
+            <blockquote className="border-l-4 border-blue-300 bg-blue-50/60 px-4 py-3 text-slate-700" {...props} />
+          ),
+          table: ({ node, ...props }) => (
+            <div className="my-6 overflow-x-auto">
+              <table className="w-full border-collapse" {...props} />
+            </div>
+          ),
+          th: ({ node, ...props }) => (
+            <th className="border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm" {...props} />
+          ),
+          td: ({ node, ...props }) => (
+            <td className="border border-slate-200 px-3 py-2 align-top text-sm" {...props} />
+          ),
+          a: ({ node, ...props }) => (
+            <a className="text-blue-600 underline underline-offset-4 hover:text-blue-700" {...props} />
+          ),
+          hr: () => <hr className="my-8 border-slate-200" />,
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </article>
+  );
+}
