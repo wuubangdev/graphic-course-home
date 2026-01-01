@@ -1,5 +1,5 @@
-import type { StrapiV5File } from "@/lib/strapi-lib/api/course";
 import { fileAlt, fileUrl } from "@/lib/strapi-lib/api/course";
+import { StrapiV5File } from "@/lib/strapi-lib/strapi-media";
 
 export type GalleryMedia =
     | { kind: "image"; src: string; alt: string }

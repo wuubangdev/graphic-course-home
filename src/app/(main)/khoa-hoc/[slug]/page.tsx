@@ -166,8 +166,3 @@ function RelatedCourseRow({ title, thumb }: { title: string; thumb: string | nul
         </div>
     );
 }
-
-function formatVnd(n: number) {
-    if (!n || n <= 0) return "0đ";
-    return new Intl.NumberFormat("vi-VN").format(n) + "đ";
-}

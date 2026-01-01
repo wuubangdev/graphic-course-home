@@ -71,7 +71,7 @@ export default function CourseGallery({ items }: { items: GalleryMedia[] }) {
     const clamp = (n: number) => Math.max(0, Math.min(list.length - 1, n));
     const go = (idx: number) => setActive(clamp(idx));
     const goNext = () => setActive((p) => (list.length ? (p + 1) % list.length : 0));
-    const goPrev = () => setActive((p) => (list.length ? (p - 1 + list.length) % list.length : 0));
+    // const goPrev = () => setActive((p) => (list.length ? (p - 1 + list.length) % list.length : 0));
 
     // generate posters for first few videos
     useEffect(() => {
