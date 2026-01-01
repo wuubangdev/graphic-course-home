@@ -1,4 +1,4 @@
-import { Course } from "@/lib/strapi-lib/api/category";
+import { Course } from "@/lib/strapi-lib/api/course";
 import { strapiMediaUrl } from "@/lib/strapi-lib/strapi";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,7 @@ function calcSalePercent(origin?: number | null, sale?: number | null) {
     return Math.max(0, Math.min(100, p));
 }
 
-function CourseCard({ item, theme }: { item: Course; theme: "light" | "dark" }) {
+export function CourseCard({ item, theme }: { item: Course; theme: "light" | "dark" }) {
     const isDark = theme === "dark";
     const href = `/khoa-hoc/${item.slug}`;
 

@@ -23,7 +23,7 @@ export type Course = {
     updatedAt: string;
     publishedAt?: string;
     content?: unknown | null;
-    //
+
     software: string;
     duration: string;
 
@@ -33,9 +33,27 @@ export type Course = {
     thumMedia?: StrapiV5File | null;
 
     // relation (many-to-many)
-    categories?: Array<
-        Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">
-    >;
+    categories?: Array<Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">>;
+};
+
+export type CourseSort = "new" | "updated" | "price_asc" | "price_desc";
+export type CoursePriceFilter = "free" | "paid";
+export type FetchCoursesOpts = {
+    page?: number;
+    pageSize?: number;
+
+    // NEW
+    q?: string; // search title/description
+    level?: string; // beginner | intermediate | advanced | ...
+    price?: CoursePriceFilter;
+    sort?: CourseSort;
+
+    // category filter
+    categoryDocumentId?: string; // filter theo category documentId
+    categorySlug?: string; // nếu category có slug
+
+    // Backward compatible (OLD)
+    search?: string; // alias của q
 };
 
 /** =========================
@@ -50,25 +68,80 @@ export function fileAlt(f: StrapiV5File) {
     return f.alternativeText || f.caption || f.name || "";
 }
 
+function buildSort(sort?: CourseSort) {
+    switch (sort) {
+        case "price_asc":
+            // ưu tiên giá sale; fallback giá gốc
+            return ["priceSale:asc", "priceOrigin:asc", "updatedAt:desc"];
+        case "price_desc":
+            return ["priceSale:desc", "priceOrigin:desc", "updatedAt:desc"];
+        case "updated":
+            return ["updatedAt:desc"];
+        case "new":
+        default:
+            // publishedAt có thể null -> fallback createdAt
+            return ["publishedAt:desc", "createdAt:desc"];
+    }
+}
+
 /** =========================
  * API
  * ========================= */
-export async function fetchCourses(opts: {
-    page?: number;
-    pageSize?: number;
-    search?: string;
-    categoryDocumentId?: string; // filter theo category documentId
-} = {}) {
-    const { page = 1, pageSize = 12, search, categoryDocumentId } = opts;
+export async function fetchCourses(opts: FetchCoursesOpts = {}) {
+    const {
+        page = 1,
+        pageSize = 12,
 
-    const baseFilters: Record<string, unknown> = {};
+        // NEW
+        q,
+        level,
+        price,
+        sort,
 
-    if (search) {
-        baseFilters.title = { $containsi: search };
+        categoryDocumentId,
+        categorySlug,
+
+        // OLD
+        search,
+    } = opts;
+
+    const keyword = (q ?? search)?.trim();
+
+    const filters: any = {};
+
+    // search: title OR description
+    if (keyword) {
+        filters.$or = [{ title: { $containsi: keyword } }, { description: { $containsi: keyword } }];
     }
 
+    // level
+    if (level && level !== "all") {
+        filters.level = { $eq: level };
+    }
+
+    // price
+    if (price === "free") {
+        // free nếu priceSale==0 OR priceOrigin==0 (tuỳ data bạn)
+        filters.$and = [
+            ...(filters.$and ?? []),
+            {
+                $or: [{ priceSale: { $eq: 0 } }, { priceOrigin: { $eq: 0 } }],
+            },
+        ];
+    } else if (price === "paid") {
+        filters.$and = [
+            ...(filters.$and ?? []),
+            {
+                $and: [{ priceSale: { $gt: 0 } }, { priceOrigin: { $gt: 0 } }],
+            },
+        ];
+    }
+
+    // category
     if (categoryDocumentId) {
-        baseFilters.categories = { documentId: { $eq: categoryDocumentId } };
+        filters.categories = { documentId: { $eq: categoryDocumentId } };
+    } else if (categorySlug) {
+        filters.categories = { slug: { $eq: categorySlug } };
     }
 
     return strapiFetch<StrapiV5Collection<Course>>(`/api/courses`, {
@@ -78,12 +151,12 @@ export async function fetchCourses(opts: {
                 thumMedia: true,
                 subMedia: true,
                 categories: {
-                    fields: ["id", "documentId", "title", "selector", "elementShow", "rank"],
+                    fields: ["documentId", "title", "selector", "elementShow", "rank"],
                 },
             },
             fields: [
-                "id",
                 "documentId",
+                "slug",
                 "title",
                 "description",
                 "level",
@@ -91,13 +164,15 @@ export async function fetchCourses(opts: {
                 "priceOrigin",
                 "priceSale",
                 "salePercent",
+                "software",
+                "duration",
                 "createdAt",
                 "updatedAt",
                 "publishedAt",
             ],
-            filters: Object.keys(baseFilters).length ? baseFilters : undefined,
+            filters: Object.keys(filters).length ? filters : undefined,
             pagination: { page, pageSize },
-            sort: ["updatedAt:desc"],
+            sort: buildSort(sort),
         },
         revalidate: 60,
         tags: ["courses"],
@@ -112,7 +187,7 @@ export async function fetchCourseByDocumentId(documentId: string) {
                 thumMedia: true,
                 subMedia: true,
                 categories: {
-                    fields: ["id", "documentId", "title", "selector", "elementShow", "rank"],
+                    fields: ["documentId", "title", "selector", "elementShow", "rank"],
                 },
             },
         },
@@ -134,7 +209,7 @@ export async function fetchCourseBySlug(slug: string) {
                 thumMedia: true,
                 subMedia: true,
                 categories: {
-                    fields: ["id", "documentId", "title", "selector", "elementShow", "rank"],
+                    fields: ["documentId", "title", "selector", "elementShow", "rank"],
                 },
             },
             pagination: { page: 1, pageSize: 1 },

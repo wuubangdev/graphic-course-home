@@ -2,31 +2,8 @@
 import { strapiFetch } from "../strapi";
 import { StrapiV5File } from "../strapi-media";
 import { StrapiV5Collection } from "../strapi-types";
+import { Course } from "./course";
 
-export type Course = {
-    id: number;
-    documentId: string;
-    slug: string;
-    title: string;
-    description: string;
-    level: string;
-    fakeStudentCount: number;
-    priceOrigin: number;
-    priceSale: number;
-    salePercent: number;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt?: string;
-    content?: unknown | null;
-
-    // media
-    subMedia?: StrapiV5File[];
-    thumImage?: StrapiV5File | null;
-    thumMedia?: StrapiV5File | null;
-
-    // relation
-    categories?: Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">;
-};
 
 export type Category = {
     id: number;
