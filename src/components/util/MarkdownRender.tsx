@@ -37,7 +37,7 @@ export default function MarkdownRender({ content }: Props) {
           a: ({ node, ...props }) => (
             <a className="text-blue-600 underline underline-offset-4 hover:text-blue-700" {...props} />
           ),
-          hr: () => <hr className="my-8 border-slate-200" />,
+          hr: () => <hr className="my-2 border-slate-200" />,
         }}
       >
         {content}

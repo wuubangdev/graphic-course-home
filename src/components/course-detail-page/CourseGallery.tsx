@@ -170,7 +170,7 @@ export default function CourseGallery({ items }: { items: GalleryMedia[] }) {
     return (
         <section className="w-full">
             {/* MAIN */}
-            <div className="relative overflow-hidden rounded-2xl bg-black/5">
+            <div className="relative overflow-hidden rounded-lg bg-black/5">
                 <div
                     className="flex transition-transform duration-300 ease-out"
                     style={{ transform: `translateX(-${active * 100}%)` }}

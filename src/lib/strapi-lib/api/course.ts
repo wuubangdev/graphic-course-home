@@ -1,41 +1,12 @@
 // src/lib/strapi-lib/api/course.ts
 import { strapiFetch, strapiMediaUrl } from "../strapi";
+import { StrapiV5File } from "../strapi-media";
 import type { StrapiV5Collection, StrapiV5Single } from "../strapi-types";
 import type { Category } from "./category";
 
 /** =========================
  * Types
  * ========================= */
-export type StrapiV5FileFormat = {
-    url: string;
-    width?: number | null;
-    height?: number | null;
-    size?: number | null;
-    mime?: string | null;
-    ext?: string | null;
-};
-
-export type StrapiV5File = {
-    id: number;
-    documentId: string;
-    name: string;
-    alternativeText?: string | null;
-    caption?: string | null;
-    width?: number | null;
-    height?: number | null;
-    formats?: {
-        large?: StrapiV5FileFormat;
-        medium?: StrapiV5FileFormat;
-        small?: StrapiV5FileFormat;
-        thumbnail?: StrapiV5FileFormat;
-    } | null;
-    url: string; // "/uploads/...."
-    mime: string;
-    ext: string;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt?: string | null;
-};
 
 export type Course = {
     id: number;
@@ -52,6 +23,9 @@ export type Course = {
     updatedAt: string;
     publishedAt?: string;
     content?: unknown | null;
+    //
+    software: string;
+    duration: string;
 
     // media
     subMedia?: StrapiV5File[];

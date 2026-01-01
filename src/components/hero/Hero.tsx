@@ -9,9 +9,9 @@ import SubNav from './SubNav';
 const Hero = async () => {
     const res = await fetchHero();
     const heroData: Hero | null = res.data;
+    const subNav = heroData?.subNav as HeroSubNavItem[] || [];
     const listImages = heroData?.listMedia || [];
     const mediaBg = heroData?.mediaBg;
-    const subNav = heroData?.subNav as HeroSubNavItem[] || [];
     return (
         <section className='w-full py-8 relative overflow-hidden'>
             {/* Background */}

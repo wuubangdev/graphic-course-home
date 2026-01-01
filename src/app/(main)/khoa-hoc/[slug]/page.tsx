@@ -18,7 +18,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
         ...(course.subMedia ?? []),
     ];
     const heroItems = toGalleryMedia(heroFiles);
-
     const categories = course.categories ?? [];
 
     return (
@@ -28,13 +27,16 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <CourseGallery items={heroItems} />
 
                 {/* BODY */}
-                <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+                <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_260px]">
                     {/* LEFT */}
-                    <article className="rounded-2xl bg-white p-6 shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
-                        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+                    <article className="rounded-2xl bg-white p-8 shadow-[0_10px_25px_rgba(0,0,0,0.06)]
+                    prose prose-slate max-w-none prose-hr:my-2
+                    ">
+                        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900"
+                            style={{ fontWeight: 600 }}
+                        >
                             {course.title}
                         </h1>
-
                         {/* categories tag */}
                         {categories.length > 0 && (
                             <div className="mt-3 flex flex-wrap gap-2">
@@ -42,7 +44,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
                                     <Link
                                         key={c.documentId}
                                         href={`/khoa-hoc?category=${encodeURIComponent(c.documentId)}&page=1`}
-                                        className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm text-blue-700 hover:bg-blue-100"
+                                        className="rounded-sm no-underline border border-blue-200 bg-blue-50 px-3 py-1 
+                                        text-sm text-blue-700 hover:bg-blue-100"
                                     >
                                         {c.title}
                                     </Link>
@@ -59,15 +62,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
                         {/* info boxes */}
                         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                            <InfoBox label="Level" value={course.level || "—"} />
-                            <InfoBox label="Học viên" value={`${course.fakeStudentCount ?? 0}+`} />
+                            <InfoBox label="Skill Level" value={course.level || "—"} />
+                            <InfoBox label="Phần mềm" value={`${course.software}`} />
                             <InfoBox
-                                label="Giá"
-                                value={
-                                    course.priceSale > 0
-                                        ? `${formatVnd(course.priceSale)}`
-                                        : "Miễn phí"
-                                }
+                                label="Thời lượng"
+                                value={`${course.duration}`}
                             />
                         </div>
 
@@ -86,30 +85,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
                             </div>
                         </section>
                     </article>
-
                     {/* RIGHT SIDEBAR */}
                     <aside className="space-y-6">
-                        {/* categories box */}
-                        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.06)] lg:sticky lg:top-24">
-                            <div className="text-sm font-semibold text-slate-700">Danh mục</div>
-
-                            <div className="mt-3 space-y-2 text-sm">
-                                {categories.length ? (
-                                    categories.map((c) => (
-                                        <Link
-                                            key={c.documentId}
-                                            href={`/${c.selector ?? ""}#${c.selector ?? ""}`}
-                                            className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100"
-                                        >
-                                            {c.title}
-                                        </Link>
-                                    ))
-                                ) : (
-                                    <div className="text-slate-500">Chưa có danh mục</div>
-                                )}
-                            </div>
-                        </div>
-
                         {/* related courses (có thể fetch thật theo category) */}
                         <div className="rounded-2xl bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
                             <div className="text-sm font-semibold text-slate-700">Các khóa liên quan</div>
@@ -129,6 +106,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
                                 />
                             </div>
                         </div>
+                        {/* categories box */}
+                        <div className="rounded-2xl bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.06)] lg:sticky lg:top-6">
+                            <div className="text-sm font-semibold text-slate-700">Danh mục</div>
+                            <div className="mt-3 space-y-2 text-sm">
+                                {categories.length ? (
+                                    categories.map((c) => (
+                                        <Link
+                                            key={c.documentId}
+                                            href={`/${c.selector ?? ""}#${c.selector ?? ""}`}
+                                            className="block rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-100"
+                                        >
+                                            {c.title}
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div className="text-slate-500">Chưa có danh mục</div>
+                                )}
+                            </div>
+                        </div>
                     </aside>
                 </div>
             </div>
@@ -138,9 +134,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 function InfoBox({ label, value }: { label: string; value: string }) {
     return (
-        <div className="rounded-xl bg-slate-100 px-4 py-3">
-            <div className="text-xs font-semibold uppercase text-slate-500">{label}</div>
-            <div className="mt-1 text-sm font-bold text-slate-900">{value}</div>
+        <div className="rounded-sm bg-slate-100 px-4 py-3">
+            <div className="text-xs font-semibold uppercase text-center text-slate-500">{label}</div>
+            <div className="mt-1 font-bold uppercase text-center text-slate-900">{value}</div>
         </div>
     );
 }
