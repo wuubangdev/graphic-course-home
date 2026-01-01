@@ -9,7 +9,8 @@ const CustomCarouselHero: React.FC<CustomCarouselProps> = ({ listImage }) => {
     return (
         <Carousel
             autoplay={{ dotDuration: true }}
-            autoplaySpeed={3000}
+            autoplaySpeed={4000}
+            speed={2000}
             infinite
             dots
             slidesToShow={2}
