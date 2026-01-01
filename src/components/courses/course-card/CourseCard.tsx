@@ -1,6 +1,6 @@
 import { formatPriceVND } from '@/function/formatPriceVND';
 import { toSlug } from '@/lib/slug';
-import { Course } from '@/lib/strapi-lib/api/category';
+import { Course } from '@/lib/strapi-lib/api/course';
 import { strapiMediaUrl } from '@/lib/strapi-lib/strapi';
 import Image from 'next/image'
 import Link from 'next/link'

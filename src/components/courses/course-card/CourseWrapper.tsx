@@ -1,6 +1,6 @@
 import React from 'react'
 import CourseCard from './CourseCard';
-import { Course } from '@/lib/strapi-lib/api/category';
+import { Course } from '@/lib/strapi-lib/api/course';
 
 interface CourseWrapperProps {
     courses: Course[];
