@@ -79,7 +79,7 @@ function Drop({
                 showSearch
                 optionFilterProp="label"
                 dropdownMatchSelectWidth
-                className="w-full"
+                className="w-full truncate"
                 style={{ height: 40, cursor: 'pointer' }}
                 dropdownStyle={{ maxHeight: 360, overflow: "auto" }}
             />

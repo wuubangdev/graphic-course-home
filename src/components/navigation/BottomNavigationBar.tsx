@@ -15,7 +15,7 @@ const BottomNavigationBar = async () => {
                             key={`bottom-nav-item-${i}`}
                             icon={strapiMediaUrl(item.icon?.url) || '/test.png'}
                             title={item.title}
-                            href={item.link}
+                            href={`/${item.link}`}
                         />
                     )}
                 </div>

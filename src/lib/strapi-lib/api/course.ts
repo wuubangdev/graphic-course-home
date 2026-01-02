@@ -8,6 +8,30 @@ import type { Category } from "./category";
  * Types
  * ========================= */
 
+export type UserMini = {
+    id: number;
+    documentId: string;
+    fullName?: string | null;
+};
+
+export type StudentProductMini = {
+    id: number;
+    documentId: string;
+    title: string;
+    slug: string;
+    thumImage?: StrapiV5File | null;
+    users_permissions_user?: UserMini | null; // users_permissions_user
+};
+
+export type CourseLinkedMini = {
+    id: number;
+    documentId: string;
+    title: string;
+    slug: string;
+    thumImage?: StrapiV5File | null;
+};
+
+
 export type Course = {
     id: number;
     documentId: string;
@@ -34,6 +58,10 @@ export type Course = {
 
     // relation (many-to-many)
     categories?: Array<Pick<Category, "id" | "documentId" | "title" | "selector" | "elementShow" | "rank">>;
+
+    // NEW relations (only minimal populated)
+    course_linkeds?: CourseLinkedMini[];
+    student_products?: StudentProductMini[];
 };
 
 export type CourseSort = "new" | "updated" | "price_asc" | "price_desc";
@@ -228,6 +256,18 @@ export async function fetchCourseBySlug(slug: string) {
                 subMedia: true,
                 categories: {
                     fields: ["documentId", "title", "selector", "elementShow", "rank"],
+                },
+
+                course_linkeds: {
+                    fields: ["documentId", "title", "slug"],
+                    populate: { thumImage: true },
+                },
+                student_products: {
+                    fields: ["documentId", "title", "slug"],
+                    populate: {
+                        thumImage: true,
+                        users_permissions_user: { fields: ["fullName"] },
+                    },
                 },
             },
             pagination: { page: 1, pageSize: 1 },

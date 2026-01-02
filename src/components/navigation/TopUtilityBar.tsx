@@ -53,7 +53,7 @@ export default async function TopUtilityBar() {
                     {itemsRight.map((it) => (
                         <Link
                             key={it.title}
-                            href={it.link!}
+                            href={`/${it.link}`}
                             target={isExternal(it.link) ? "_blank" : undefined}
                             rel={isExternal(it.link) ? "noopener noreferrer" : undefined}
                             className="flex items-center gap-2 text-sm opacity-70 hover:opacity-100 duration-300"
