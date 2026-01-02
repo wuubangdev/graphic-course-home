@@ -67,10 +67,9 @@ export default async function CoursesPage({
 
     return (
         <main className="min-h-screen">
-            <section className="border-b bg-white/70">
-                <div className="mx-auto max-w-[1280px] px-4 py-6">
+            <section className="pt-8 mx-auto max-w-[1280px] px-4">
+                <div className="py-6 bg-white/70 px-6 rounded-lg">
                     <h1 className="text-2xl font-bold">Tất cả khoá học</h1>
-
                     <div className="mt-4">
                         <CourseFilters
                             initial={{
@@ -88,16 +87,17 @@ export default async function CoursesPage({
                     </div>
                 </div>
             </section>
-
-            <section className="mx-auto max-w-[1280px] px-4 py-8">
-                <CourseGrid
-                    courses={courses}
-                    pagination={{
-                        page: pagination?.page ?? page,
-                        pageCount: pagination?.pageCount ?? 1,
-                        total: pagination?.total ?? courses.length,
-                    }}
-                />
+            <section className="mx-auto max-w-[1280px] px-4 pt-4 pb-8">
+                <div className="py-6 bg-white/70 px-6 rounded-lg">
+                    <CourseGrid
+                        courses={courses}
+                        pagination={{
+                            page: pagination?.page ?? page,
+                            pageCount: pagination?.pageCount ?? 1,
+                            total: pagination?.total ?? courses.length,
+                        }}
+                    />
+                </div>
             </section>
         </main>
     );

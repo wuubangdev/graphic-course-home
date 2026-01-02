@@ -1,7 +1,7 @@
 "use client";
-
 import { useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Select } from "antd";
 
 type Initial = {
     q: string;
@@ -17,19 +17,84 @@ type CategoryLite = {
     slug?: string;
 };
 
+type ValueKey = "documentId" | "slug";
+
 function setQuery(params: URLSearchParams, key: string, val: string) {
     if (!val || val === "all") params.delete(key);
     else params.set(key, val);
 }
 
+type Opt = { value: string; label: string };
+
+function buildCategoryOptions(categories: CategoryLite[], key: ValueKey): Opt[] {
+    const opts: Opt[] = [{ value: "all", label: "Thể loại (All)" }];
+    for (const c of categories) {
+        const v = key === "slug" ? c.slug ?? "" : c.documentId;
+        if (!v) continue;
+        opts.push({ value: v, label: c.title });
+    }
+    return opts;
+}
+
+const levelOptions: Opt[] = [
+    { value: "all", label: "Trình độ (All)" },
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
+];
+
+const priceOptions: Opt[] = [
+    { value: "all", label: "Miễn phí/ thu phí" },
+    { value: "free", label: "Miễn phí" },
+    { value: "paid", label: "Trả phí" },
+];
+
+const sortOptions: Opt[] = [
+    { value: "new", label: "Giá" },
+    { value: "updated", label: "Cập nhật gần đây" },
+    { value: "price_asc", label: "Giá tăng dần" },
+    { value: "price_desc", label: "Giá giảm dần" },
+];
+
+function Drop({
+    value,
+    options,
+    placeholder,
+    onChange,
+}: {
+    value: string;
+    options: Opt[];
+    placeholder?: string;
+    onChange: (v: string) => void;
+}) {
+    return (
+        <div className="bg-white rounded-md shadow-sm cursor-pointer">
+            <Select
+                value={value}
+                options={options}
+                onChange={onChange}
+                placeholder={placeholder}
+                placement="bottomLeft" // ép dropdown mở xuống
+                size="middle"
+                showSearch
+                optionFilterProp="label"
+                dropdownMatchSelectWidth
+                className="w-full"
+                style={{ height: 40, cursor: 'pointer' }}
+                dropdownStyle={{ maxHeight: 360, overflow: "auto" }}
+            />
+        </div>
+    );
+}
+
 export default function CourseFilters({
     initial,
     categories,
-    categoryValueKey = "documentId", // đổi "slug" nếu bạn filter theo slug
+    categoryValueKey = "documentId",
 }: {
     initial: Initial;
     categories: CategoryLite[];
-    categoryValueKey?: "documentId" | "slug";
+    categoryValueKey?: ValueKey;
 }) {
     const router = useRouter();
     const pathname = usePathname();
@@ -41,6 +106,11 @@ export default function CourseFilters({
     const [level, setLevel] = useState(initial.level || "all");
     const [price, setPrice] = useState(initial.price || "all");
     const [sort, setSort] = useState(initial.sort || "new");
+
+    const categoryOptions = useMemo(
+        () => buildCategoryOptions(categories, categoryValueKey),
+        [categories, categoryValueKey]
+    );
 
     const canReset = useMemo(() => {
         return (
@@ -82,115 +152,63 @@ export default function CourseFilters({
     }
 
     return (
-        <div className="rounded-2xl border bg-white p-4 shadow-sm">
+        <div className="rounded-2xl">
             <div className="grid grid-cols-1 gap-3 md:grid-cols-12">
-                <div className="md:col-span-5">
-                    <label className="mb-1 block text-xs font-semibold text-slate-700">Tìm kiếm</label>
-                    <div className="flex gap-2">
-                        <input
-                            value={q}
-                            onChange={(e) => setQ(e.target.value)}
-                            onKeyDown={(e) => e.key === "Enter" && apply({ q })}
-                            placeholder="Tên khoá học..."
-                            className="h-10 w-full rounded-xl border px-3 text-sm outline-none focus:border-slate-400"
-                        />
-                        <button
-                            disabled={isPending}
-                            onClick={() => apply({ q })}
-                            className="h-10 shrink-0 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white disabled:opacity-60"
-                        >
-                            Lọc
-                        </button>
-                    </div>
-                </div>
-
                 <div className="md:col-span-2">
-                    <label className="mb-1 block text-xs font-semibold text-slate-700">Danh mục</label>
-                    <select
+                    <Drop
                         value={category}
-                        onChange={(e) => {
-                            const v = e.target.value;
+                        options={categoryOptions}
+                        onChange={(v) => {
                             setCategory(v);
                             apply({ category: v });
                         }}
-                        className="h-10 w-full rounded-xl border px-3 text-sm outline-none"
-                    >
-                        <option value="all">Tất cả</option>
-                        {categories.map((c) => {
-                            const v = categoryValueKey === "slug" ? (c.slug || "") : c.documentId;
-                            if (!v) return null;
-                            return (
-                                <option key={c.documentId} value={v}>
-                                    {c.title}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    />
                 </div>
 
                 <div className="md:col-span-2">
-                    <label className="mb-1 block text-xs font-semibold text-slate-700">Trình độ</label>
-                    <select
+                    <Drop
                         value={level}
-                        onChange={(e) => {
-                            const v = e.target.value;
+                        options={levelOptions}
+                        onChange={(v) => {
                             setLevel(v);
                             apply({ level: v });
                         }}
-                        className="h-10 w-full rounded-xl border px-3 text-sm outline-none"
-                    >
-                        <option value="all">Tất cả</option>
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                </div>
-
-                <div className="md:col-span-1">
-                    <label className="mb-1 block text-xs font-semibold text-slate-700">Giá</label>
-                    <select
-                        value={price}
-                        onChange={(e) => {
-                            const v = e.target.value;
-                            setPrice(v);
-                            apply({ price: v });
-                        }}
-                        className="h-10 w-full rounded-xl border px-3 text-sm outline-none"
-                    >
-                        <option value="all">All</option>
-                        <option value="free">Free</option>
-                        <option value="paid">Paid</option>
-                    </select>
+                    />
                 </div>
 
                 <div className="md:col-span-2">
-                    <label className="mb-1 block text-xs font-semibold text-slate-700">Sắp xếp</label>
-                    <select
+                    <Drop
+                        value={price}
+                        options={priceOptions}
+                        onChange={(v) => {
+                            setPrice(v);
+                            apply({ price: v });
+                        }}
+                    />
+                </div>
+
+                <div className="md:col-span-2">
+                    <Drop
                         value={sort}
-                        onChange={(e) => {
-                            const v = e.target.value;
+                        options={sortOptions}
+                        onChange={(v) => {
                             setSort(v);
                             apply({ sort: v });
                         }}
-                        className="h-10 w-full rounded-xl border px-3 text-sm outline-none"
-                    >
-                        <option value="new">Mới nhất</option>
-                        <option value="updated">Cập nhật gần đây</option>
-                        <option value="price_asc">Giá tăng dần</option>
-                        <option value="price_desc">Giá giảm dần</option>
-                    </select>
+                    />
                 </div>
-            </div>
-
-            <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs text-slate-500">{isPending ? "Đang tải..." : " "}</span>
-                <button
-                    disabled={!canReset || isPending}
-                    onClick={reset}
-                    className="rounded-xl border px-3 py-2 text-sm font-semibold disabled:opacity-40"
-                >
-                    Reset
-                </button>
+                <div className="md:col-span-2 flex items-center gap-2">
+                    <Button
+                        type="primary"
+                        disabled={!canReset}
+                        loading={isPending}
+                        onClick={reset}
+                        style={{ height: 40 }}
+                    >
+                        Làm mới
+                    </Button>
+                    <span className="text-xs text-slate-500">{isPending ? "Đang tải..." : " "}</span>
+                </div>
             </div>
         </div>
     );
