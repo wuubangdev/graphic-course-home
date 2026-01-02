@@ -170,14 +170,14 @@ export default function CourseGallery({ items }: { items: GalleryMedia[] }) {
     return (
         <section className="w-full">
             {/* MAIN */}
-            <div className="relative overflow-hidden rounded-lg bg-black/5">
+            <div className="relative overflow-hidden w-4/5 mx-auto rounded-lg bg-black/5">
                 <div
                     className="flex transition-transform duration-300 ease-out"
                     style={{ transform: `translateX(-${active * 100}%)` }}
                 >
                     {list.map((m, idx) => (
                         <div key={idx} className="relative w-full flex-none">
-                            <div className="aspect-[16/9] w-full">
+                            <div className="aspect-[16/9] w-full mx-auto relative">
                                 {m.kind === "image" ? (
                                     <Image
                                         src={m.src}
@@ -261,13 +261,12 @@ export default function CourseGallery({ items }: { items: GalleryMedia[] }) {
                 <div className="mx-auto flex w-fit gap-3">
                     {list.map((m, idx) => {
                         const isActive = idx === active;
-
                         return (
                             <button
                                 key={idx}
                                 onClick={() => go(idx)}
                                 className={[
-                                    "relative h-[72px] w-[120px] flex-none overflow-hidden rounded-xl border",
+                                    "relative h-[72px] w-[120px] flex-none overflow-hidden rounded-lg",
                                     isActive
                                         ? "border-blue-600 ring-2 ring-blue-500/30"
                                         : "border-black/10 hover:border-black/20",
@@ -286,7 +285,7 @@ export default function CourseGallery({ items }: { items: GalleryMedia[] }) {
                                                     src={poster}
                                                     alt={m.title ?? "Video"}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-cover rounded-lg"
                                                     sizes="120px"
                                                 />
                                             ) : (
