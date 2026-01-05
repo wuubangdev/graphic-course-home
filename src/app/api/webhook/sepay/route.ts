@@ -12,6 +12,42 @@ type SepayWebhookPayload = {
     [k: string]: unknown;
 };
 
+type StrapiList<T> = { data: T[] };
+
+// Strapi relation có thể là object trực tiếp hoặc { data: object }
+type Rel<T> = T | { data?: T | null } | null | undefined;
+
+function hasId(x: unknown): x is { id: number } {
+    return typeof x === "object" && x !== null && "id" in x && typeof (x as { id: unknown }).id === "number";
+}
+
+function relId(rel: unknown): number | null {
+    // direct {id}
+    if (hasId(rel)) return rel.id;
+
+    // { data: {id} }
+    if (typeof rel === "object" && rel !== null && "data" in rel) {
+        const d = (rel as { data?: unknown }).data;
+        if (hasId(d)) return d.id;
+    }
+
+    return null;
+}
+
+type OrderMin = {
+    id: number;
+    status?: string | null;
+    totalAmount?: number | null;
+    user?: Rel<{ id: number }>;
+};
+
+type OrderItemMin = {
+    id: number;
+    course?: Rel<{ id: number }>;
+};
+
+type PurchaseMin = { id: number };
+
 function ok() {
     return NextResponse.json({ success: true }, { status: 200 });
 }
@@ -28,7 +64,7 @@ export async function POST(req: NextRequest) {
         if (!payload || payload.transferType !== "in" || !payload.code) return ok();
 
         // find order by code
-        const orderList = await strapiServerFetch<{ data: any[] }>("/api/orders", {
+        const orderList = await strapiServerFetch<StrapiList<OrderMin>>("/api/orders", {
             query: {
                 "filters[code][$eq]": payload.code,
                 "populate[user]": "true",
@@ -41,12 +77,13 @@ export async function POST(req: NextRequest) {
 
         if (order.status === "paid") return ok();
 
-        const orderId: number = order.id;
-        const userId: number | null = order.user?.id ?? order.user?.data?.id ?? null;
+        const orderId = order.id;
+        const userId = relId(order.user);
         if (!userId) return ok();
 
         // validate amount (optional)
-        if (Number(payload.transferAmount) < Number(order.totalAmount)) return ok();
+        const orderTotal = Number(order.totalAmount ?? 0);
+        if (Number(payload.transferAmount) < orderTotal) return ok();
 
         // update order -> paid
         await strapiServerFetch(`/api/orders/${orderId}`, {
@@ -61,7 +98,7 @@ export async function POST(req: NextRequest) {
         });
 
         // fetch order-items (populate course)
-        const items = await strapiServerFetch<{ data: any[] }>("/api/order-items", {
+        const items = await strapiServerFetch<StrapiList<OrderItemMin>>("/api/order-items", {
             query: {
                 "filters[order][id][$eq]": String(orderId),
                 "populate[course]": "true",
@@ -69,12 +106,12 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        for (const it of items.data) {
-            const courseId: number | null = it.course?.id ?? it.course?.data?.id ?? null;
+        for (const it of items.data ?? []) {
+            const courseId = relId(it.course);
             if (!courseId) continue;
 
             // check purchase exists
-            const existed = await strapiServerFetch<{ data: any[] }>("/api/purchases", {
+            const existed = await strapiServerFetch<StrapiList<PurchaseMin>>("/api/purchases", {
                 query: {
                     "filters[user][id][$eq]": String(userId),
                     "filters[course][id][$eq]": String(courseId),
@@ -82,7 +119,7 @@ export async function POST(req: NextRequest) {
                 },
             });
 
-            if (existed.data?.length) continue;
+            if ((existed.data?.length ?? 0) > 0) continue;
 
             await strapiServerFetch("/api/purchases", {
                 method: "POST",
@@ -98,6 +135,7 @@ export async function POST(req: NextRequest) {
 
         return ok();
     } catch {
+        // webhook: không leak lỗi, vẫn 200 để Sepay không retry vô hạn
         return NextResponse.json({ success: false }, { status: 200 });
     }
 }

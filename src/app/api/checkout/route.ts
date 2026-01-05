@@ -14,6 +14,16 @@ function makeOrderCode() {
     return `ORD_${y}${m}${day}_${rand}`;
 }
 
+function getErrorMessage(e: unknown) {
+    if (e instanceof Error) return e.message;
+    if (typeof e === "string") return e;
+    try {
+        return JSON.stringify(e);
+    } catch {
+        return "Server error";
+    }
+}
+
 async function getMeUserFromCookie() {
     const cookieStore = await cookies();
     const jwt = cookieStore.get("strapi_jwt")?.value;
@@ -24,8 +34,8 @@ async function getMeUserFromCookie() {
         cache: "no-store",
     });
 
-    const data = await r.json().catch(() => null);
-    if (!r.ok) return null;
+    const data: unknown = await r.json().catch(() => null);
+    if (!r.ok || !data || typeof data !== "object") return null;
 
     // Strapi users/me trả về object user, thường có id
     return data as { id: number;[k: string]: unknown };
@@ -43,9 +53,13 @@ export async function POST(req: NextRequest) {
         const me = await getMeUserFromCookie();
         if (!me?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-        const { courseDocumentIds } = (await req.json()) as { courseDocumentIds: string[] };
+        const body: unknown = await req.json().catch(() => null);
+        const courseDocumentIds =
+            body && typeof body === "object" && "courseDocumentIds" in body
+                ? (body as { courseDocumentIds?: unknown }).courseDocumentIds
+                : null;
 
-        if (!Array.isArray(courseDocumentIds) || courseDocumentIds.length === 0) {
+        if (!Array.isArray(courseDocumentIds) || courseDocumentIds.length === 0 || !courseDocumentIds.every((x) => typeof x === "string")) {
             return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
         }
 
@@ -104,7 +118,6 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // Sepay: nội dung chuyển khoản nên dùng code để webhook match
         return NextResponse.json(
             {
                 orderId,
@@ -116,7 +129,7 @@ export async function POST(req: NextRequest) {
             },
             { status: 200 }
         );
-    } catch (e: any) {
-        return NextResponse.json({ error: e?.message || "Server error" }, { status: 500 });
+    } catch (e: unknown) {
+        return NextResponse.json({ error: getErrorMessage(e) }, { status: 500 });
     }
 }

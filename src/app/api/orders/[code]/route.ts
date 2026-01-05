@@ -13,7 +13,6 @@ type OrderEntity = {
     paymentRef?: string | null;
     paidAt?: string | null;
     expiresAt?: string | null;
-    // populated
     user?: { id: number };
     order_items?: Array<{
         id: number;
@@ -24,6 +23,16 @@ type OrderEntity = {
     }>;
 };
 
+function getErrorMessage(e: unknown) {
+    if (e instanceof Error) return e.message;
+    if (typeof e === "string") return e;
+    try {
+        return JSON.stringify(e);
+    } catch {
+        return "Server error";
+    }
+}
+
 function isExpired(expiresAt?: string | null) {
     if (!expiresAt) return false;
     const t = Date.parse(expiresAt);
@@ -31,37 +40,19 @@ function isExpired(expiresAt?: string | null) {
     return Date.now() > t;
 }
 
-export async function GET(
-    _req: NextRequest,
-    ctx: { params: Promise<{ code: string }> }
-) {
+export async function GET(_req: NextRequest, ctx: { params: Promise<{ code: string }> }) {
     try {
         const { code } = await ctx.params;
         const orderCode = decodeURIComponent(code).trim();
         if (!orderCode) return NextResponse.json({ error: "Invalid code" }, { status: 400 });
 
-        // Query order theo code
         const res = await strapiServerFetch<StrapiList<OrderEntity>>("/api/orders", {
             query: {
                 filters: { code: { $eq: orderCode } },
                 pagination: { pageSize: 1 },
-                fields: [
-                    "code",
-                    "status",
-                    "totalAmount",
-                    "currency",
-                    "paymentProvider",
-                    "paymentRef",
-                    "paidAt",
-                    "expiresAt",
-                ],
+                fields: ["code", "status", "totalAmount", "currency", "paymentProvider", "paymentRef", "paidAt", "expiresAt"],
                 populate: {
-                    order_items: {
-                        fields: ["qty", "unitPrice", "lineTotal"],
-                        populate: {
-                            course: { fields: ["documentId", "slug", "title"] },
-                        },
-                    },
+                    order_items: { fields: ["qty", "unitPrice", "lineTotal"], populate: { course: { fields: ["documentId", "slug", "title"] } } },
                     user: { fields: ["id"] },
                 },
             },
@@ -70,7 +61,6 @@ export async function GET(
         const order = res.data?.[0];
         if (!order) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
-        // FE convenience: expired tự tính (không bắt buộc bạn phải update status trên Strapi)
         const expired = order.status === "pending" && isExpired(order.expiresAt);
 
         return NextResponse.json(
@@ -92,19 +82,13 @@ export async function GET(
                             qty: it.qty,
                             unitPrice: it.unitPrice,
                             lineTotal: it.lineTotal,
-                            course: it.course
-                                ? {
-                                    documentId: it.course.documentId,
-                                    slug: it.course.slug,
-                                    title: it.course.title,
-                                }
-                                : null,
+                            course: it.course ? { documentId: it.course.documentId, slug: it.course.slug, title: it.course.title } : null,
                         })) ?? [],
                 },
             },
             { status: 200 }
         );
-    } catch (e: any) {
-        return NextResponse.json({ error: e?.message || "Server error" }, { status: 500 });
+    } catch (e: unknown) {
+        return NextResponse.json({ error: getErrorMessage(e) }, { status: 500 });
     }
 }
