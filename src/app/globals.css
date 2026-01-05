@@ -39,36 +39,6 @@ body {
 
 }
 
-@media (min-width: 1536px) {
-
-  /* 2xl */
-  html {
-    font-size: 18px;
-  }
-}
-
-@media (min-width: 1920px) {
-  html {
-    font-size: 20px;
-  }
-}
-
-@media (min-width: 2560px) {
-
-  /* 1440p ultrawide / 4K scaled */
-  html {
-    font-size: 22px;
-  }
-}
-
-@media (min-width: 3840px) {
-
-  /* 4K native width */
-  html {
-    font-size: 24px;
-  }
-}
-
 @keyframes bounceSoft {
 
   0%,

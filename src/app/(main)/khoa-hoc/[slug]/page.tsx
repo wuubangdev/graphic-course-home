@@ -6,6 +6,7 @@ import { toGalleryMedia } from "@/components/course-detail-page/courseMedia";
 import CourseGallery from "@/components/course-detail-page/CourseGallery";
 import MarkdownRender from "@/components/util/MarkdownRender";
 import RelatedCourseRow from "@/components/course-detail-page/RelatedCourseRow";
+import ButtonBuy from "@/components/popup/ButtonBuy";
 
 export default async function Page({
     params,
@@ -135,6 +136,14 @@ export default async function Page({
                     </aside>
                 </div>
             </div>
+            <ButtonBuy
+                course={{
+                    documentId: course.documentId,
+                    title: course.title,
+                    price: Number(course.priceSale ?? course.priceOrigin ?? 0),
+                    image: course.thumImage ? fileUrl(course.thumImage, "thumbnail") : null,
+                }}
+            />
         </main>
     );
 }
@@ -171,17 +180,3 @@ function StudentWorkCard({ thumb, title, fullName, href }:
         </Link>
     );
 }
-
-// function RelatedCourseRow({ title, thumb, href }:
-//     { title: string; thumb: string | null, href: string }) {
-//     return (
-//         <Link href={`/khoa-hoc/${href}`} className="flex gap-3 rounded-xl border border-black/10 p-3 hover:bg-slate-50">
-//             <div className="relative h-12 aspect-video flex-none overflow-hidden rounded-lg bg-slate-200">
-//                 {thumb ? <Image src={thumb} alt={title} fill className="object-cover" sizes="48px" /> : null}
-//             </div>
-//             <div className="min-w-0">
-//                 <div className="text-sm line-clamp-2 text-slate-900">{title}</div>
-//             </div>
-//         </Link>
-//     );
-// }

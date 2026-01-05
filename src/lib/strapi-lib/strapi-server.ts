@@ -64,6 +64,15 @@ export async function strapiServerFetch<T>(
         data = text ? JSON.parse(text) : null;
     } catch { }
 
+    if (!res.ok) {
+        console.error("[STRAPI_FETCH_FAIL]", {
+            url,
+            status: res.status,
+            data,
+        });
+        throw new StrapiError(`Strapi server fetch failed: ${res.status}`, res.status, data);
+    }
+
     if (!res.ok) throw new StrapiError(`Strapi server fetch failed: ${res.status}`, res.status, data);
     return data as T;
 }

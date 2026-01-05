@@ -6,21 +6,26 @@ type StrapiList<T> = { data: T[] };
 type OrderEntity = {
     id: number;
     code: string;
-    status: "pending" | "paid" | "cancelled" | "expired";
+
+    // Strapi field thực tế
+    order_status: "pending" | "paid" | "cancelled" | "expired" | string;
+
     totalAmount: number;
     currency: string;
     paymentProvider?: string | null;
     paymentRef?: string | null;
     paidAt?: string | null;
     expiresAt?: string | null;
-    user?: { id: number };
-    order_items?: Array<{
+
+    user?: { id: number } | null;
+
+    items?: Array<{
         id: number;
         qty: number;
         unitPrice: number;
         lineTotal: number;
-        course?: { id: number; documentId: string; slug: string; title: string };
-    }>;
+        course?: { id: number; documentId: string; slug: string; title: string } | null;
+    }> | null;
 };
 
 function getErrorMessage(e: unknown) {
@@ -44,24 +49,31 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ code: stri
     try {
         const { code } = await ctx.params;
         const orderCode = decodeURIComponent(code).trim();
-        if (!orderCode) return NextResponse.json({ error: "Invalid code" }, { status: 400 });
+        if (!orderCode) return NextResponse.json({ ok: false, error: "Invalid code" }, { status: 400 });
 
         const res = await strapiServerFetch<StrapiList<OrderEntity>>("/api/orders", {
             query: {
                 filters: { code: { $eq: orderCode } },
                 pagination: { pageSize: 1 },
-                fields: ["code", "status", "totalAmount", "currency", "paymentProvider", "paymentRef", "paidAt", "expiresAt"],
+
+                // IMPORTANT: dùng order_status, không dùng status
+                fields: ["code", "order_status", "totalAmount", "currency", "paymentProvider", "paymentRef", "paidAt", "expiresAt"],
+
                 populate: {
-                    order_items: { fields: ["qty", "unitPrice", "lineTotal"], populate: { course: { fields: ["documentId", "slug", "title"] } } },
+                    items: {
+                        fields: ["qty", "unitPrice", "lineTotal"],
+                        populate: { course: { fields: ["documentId", "slug", "title"] } },
+                    },
                     user: { fields: ["id"] },
                 },
             },
         });
 
         const order = res.data?.[0];
-        if (!order) return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        if (!order) return NextResponse.json({ ok: false, error: "Order not found" }, { status: 404 });
 
-        const expired = order.status === "pending" && isExpired(order.expiresAt);
+        const status = String(order.order_status || "pending") as OrderEntity["order_status"];
+        const expired = status === "pending" && isExpired(order.expiresAt);
 
         return NextResponse.json(
             {
@@ -69,7 +81,10 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ code: stri
                 order: {
                     id: order.id,
                     code: order.code,
-                    status: expired ? "expired" : order.status,
+
+                    // FE vẫn dùng field tên "status" => map lại từ order_status
+                    status: expired ? "expired" : status,
+
                     totalAmount: order.totalAmount,
                     currency: order.currency,
                     paymentProvider: order.paymentProvider ?? "sepay",
@@ -77,7 +92,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ code: stri
                     paidAt: order.paidAt ?? null,
                     expiresAt: order.expiresAt ?? null,
                     items:
-                        order.order_items?.map((it) => ({
+                        order.items?.map((it) => ({
                             id: it.id,
                             qty: it.qty,
                             unitPrice: it.unitPrice,
@@ -88,7 +103,8 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ code: stri
             },
             { status: 200 }
         );
-    } catch (e: unknown) {
-        return NextResponse.json({ error: getErrorMessage(e) }, { status: 500 });
+    } catch (e: any) {
+        const status = typeof e?.status === "number" ? e.status : 500;
+        return NextResponse.json({ ok: false, error: getErrorMessage(e), details: e?.details ?? null }, { status });
     }
 }

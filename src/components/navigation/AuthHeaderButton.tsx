@@ -20,12 +20,32 @@ function getInitial(name?: string) {
     return (last[0] || "U").toUpperCase();
 }
 
+function AuthPlaceholder() {
+    // Placeholder cố định: server/client render giống nhau
+    return (
+        <div className="flex justify-center gap-1 items-center">
+            <span
+                className="flex gap-2 py-2 px-2 text-sm rounded-lg text-white border-[1px] border-white/60
+        hover:bg-blue-700 duration-300 cursor-pointer"
+            >
+                <span className="size-5 inline-block" />
+                ...
+            </span>
+        </div>
+    );
+}
+
 export default function AuthHeaderButton() {
     const router = useRouter();
     const [api, contextHolder] = notification.useNotification();
 
+    const [mounted, setMounted] = useState(false);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<AuthUser | null>(null);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     async function loadMe() {
         setLoading(true);
@@ -35,16 +55,22 @@ export default function AuthHeaderButton() {
                 setUser(null);
                 return;
             }
-            const d = (await r.json()) as { ok: boolean; user: AuthUser };
-            setUser(d.user ?? null);
+            const d: unknown = await r.json().catch(() => null);
+            if (!d || typeof d !== "object") {
+                setUser(null);
+                return;
+            }
+            const u = (d as { user?: unknown }).user;
+            setUser((u && typeof u === "object" ? (u as AuthUser) : null) ?? null);
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        loadMe();
-    }, []);
+        if (!mounted) return;
+        void loadMe();
+    }, [mounted]);
 
     async function logout() {
         try {
@@ -95,38 +121,24 @@ export default function AuthHeaderButton() {
                 ),
             },
             { type: "divider" },
-            {
-                key: "profile",
-                label: <span>Thông tin cá nhân</span>,
-                onClick: () => router.push("/account"),
-            },
-            {
-                key: "library",
-                label: <span>Đã mua / Tải về</span>,
-                onClick: () => router.push("/library"),
-            },
-            {
-                key: "cart",
-                label: <span>Giỏ hàng của tôi</span>,
-                onClick: () => router.push("/cart"), // ✅ sửa đúng route
-            },
-            {
-                key: "payment",
-                label: <span>Thanh toán</span>,
-                onClick: () => router.push("/payment"),
-            },
-
+            { key: "profile", label: <span>Thông tin cá nhân</span>, onClick: () => router.push("/account") },
+            { key: "library", label: <span>Đã mua / Tải về</span>, onClick: () => router.push("/library") },
+            { key: "cart", label: <span>Giỏ hàng của tôi</span>, onClick: () => router.push("/cart") },
+            { key: "payment", label: <span>Thanh toán</span>, onClick: () => router.push("/payment") },
             { type: "divider" },
-            {
-                key: "logout",
-                danger: true,
-                label: <span>Đăng xuất</span>,
-                onClick: logout,
-            },
+            { key: "logout", danger: true, label: <span>Đăng xuất</span>, onClick: logout },
         ];
     }, [user, displayName, router]);
 
-    if (loading) return null;
+    // SSR + first client render: luôn giống nhau
+    if (!mounted || loading) {
+        return (
+            <>
+                {contextHolder}
+                <AuthPlaceholder />
+            </>
+        );
+    }
 
     // Chưa login
     if (!user) {
@@ -134,10 +146,23 @@ export default function AuthHeaderButton() {
             <>
                 {contextHolder}
                 <Link href="/login" className="flex justify-center gap-1 items-center">
-                    <span className="flex gap-2 py-2 px-2 text-sm rounded-lg text-white border-[1px] border-white/60
-                    hover:bg-blue-700 duration-300 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    <span
+                        className="flex gap-2 py-2 px-2 text-sm rounded-lg text-white border-[1px] border-white/60
+            hover:bg-blue-700 duration-300 cursor-pointer"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                            />
                         </svg>
                         Đăng nhập
                     </span>
@@ -146,7 +171,7 @@ export default function AuthHeaderButton() {
         );
     }
 
-    // Đã login -> avatar hover dropdown
+    // Đã login
     return (
         <>
             {contextHolder}
@@ -166,16 +191,6 @@ export default function AuthHeaderButton() {
                         }}
                     >
                         {menu}
-                        {/* <div
-                            style={{
-                                padding: 10,
-                                fontSize: 12,
-                                color: "rgba(0,0,0,0.55)",
-                                borderTop: "1px solid rgba(0,0,0,0.06)",
-                            }}
-                        >
-                            Đang đăng nhập: <b>{displayName}</b>
-                        </div> */}
                     </div>
                 )}
             >
@@ -192,7 +207,7 @@ export default function AuthHeaderButton() {
                     >
                         {initial}
                     </Avatar>
-                    <span className="text-white">{user.username}</span>
+                    <span className="text-white">{user.username || displayName}</span>
                 </div>
             </Dropdown>
         </>
